@@ -14,17 +14,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TrackPlacementHandler implements IPlacementHandler {
+public class TrackPlacementHandler extends SimplePlacementHandler {
 
     @Override
     public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
         return blockState.is(CreateResources.Blocks.fakeTrack);
-    }
-
-    @Override
-    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, @SuppressWarnings("removal") PlacementSettings settings) {
-        world.setBlock(pos, blockState, Constants.UPDATE_FLAG);
-        return ActionProcessingResult.SUCCESS;
     }
 
     @Override

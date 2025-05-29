@@ -9,8 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
-import nl.motionlesstrain.createcolonies.resources.CreateResources;
-import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -20,7 +18,12 @@ public class PlacementHandlers {
     private static void addHandler(IPlacementHandler handler) {
         com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers.add(handler);
     }
-    public static void initialiseHandlers(FMLLoadCompleteEvent event) {
+    public static void initialiseHandlers(FMLLoadCompleteEvent ignoredEvent) {
+        // TODO: Encased blocks (SimplePlacementHandlers to fix material cost)
+        // TODO: Station (doesn't rotate)
+        // TODO: Some other fix for curved rails? If there seems to be a solution for belts as well?
+        // TODO: (Low Prio) rotating blocks?????
+        addHandler(new BeltPlacementHandler());
         addHandler(new TrainBogeyPlacementHandler());
         addHandler(new TrackPlacementHandler());
         addHandler(new DebugPlacementHandler());
@@ -31,7 +34,7 @@ public class PlacementHandlers {
 
         @Override
         public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
-            LOGGER.debug("Trying to handle blockstate {} at position {}, needing items {} if not overridden", blockState, blockPos,
+            LOGGER.debug("Trying to handle block state {} at position {}, needing items {} if not overridden", blockState, blockPos,
                     BlockUtils.getItemStackFromBlockState(blockState));
             return false;
         }

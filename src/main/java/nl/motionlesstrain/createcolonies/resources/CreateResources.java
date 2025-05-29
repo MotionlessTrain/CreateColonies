@@ -15,6 +15,9 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:block", value = "create:fake_track")
         public static Block fakeTrack = null;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:belt")
+        public static Block belt = null;
     }
 
     public static class Items {
@@ -23,5 +26,14 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:item", value = "create:track")
         public static Item track;
+
+        @ObjectHolder(registryName = "minecraft:item", value = "create:belt_connector")
+        public static Item belt = null;
+
+        @ObjectHolder(registryName = "minecraft:item", value = "create:andesite_casing")
+        public static Item andesiteCasing = null;
+
+        @ObjectHolder(registryName = "minecraft:item", value = "create:shaft")
+        public static Item shaft;
     }
 }

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TrainBogeyPlacementHandler implements IPlacementHandler {
+public class TrainBogeyPlacementHandler extends SimplePlacementHandler {
     @Override
     public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
         return blockState.is(CreateResources.Blocks.smallBogey) || blockState.is(CreateResources.Blocks.largeBogey);
@@ -23,11 +23,5 @@ public class TrainBogeyPlacementHandler implements IPlacementHandler {
     @Override
     public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
         return List.of(ItemUtils.stackFromNullable(CreateResources.Items.trainCasing));
-    }
-
-    @Override
-    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, @SuppressWarnings("removal") PlacementSettings settings) {
-        world.setBlock(pos, blockState, Constants.UPDATE_FLAG);
-        return ActionProcessingResult.SUCCESS;
     }
 }
