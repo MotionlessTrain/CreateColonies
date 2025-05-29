@@ -80,6 +80,8 @@ public class CreateColonies {
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
+        modEventBus.addListener(PlacementHandlers::initialiseHandlers);
+
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
