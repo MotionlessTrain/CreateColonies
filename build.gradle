@@ -82,11 +82,15 @@ minecraft {
         }
 
         client {
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
         server {
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'
         }
@@ -99,6 +103,8 @@ minecraft {
         }
 
         data {
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
             // example of overriding the workingDirectory set in configureEach above
             workingDirectory project.file('run-data')
 
@@ -171,6 +177,8 @@ dependencies {
     implementation (fg.deobf("com.ldtteam:minecolonies:${minecolonies_version}")){
         transitive = false
     }
+    runtimeOnly (fg.deobf("com.ldtteam:blockui:${blockui_version}"))
+    runtimeOnly (fg.deobf("com.ldtteam:domum_ornamentum:${domum_ornamentum_version}"))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
