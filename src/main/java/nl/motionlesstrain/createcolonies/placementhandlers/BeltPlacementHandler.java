@@ -9,6 +9,7 @@ import com.simibubi.create.content.kinetics.belt.BeltPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,9 +37,6 @@ public class BeltPlacementHandler implements IPlacementHandler {
     public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
         final List<ItemStack> requiredItems = new ArrayList<>();
 
-        if (blockState.hasProperty(BeltBlock.CASING) && blockState.getValue(BeltBlock.CASING)) {
-            requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Items.andesiteCasing));
-        }
         if (blockState.hasProperty(BeltBlock.PART)) {
             if (blockState.getValue(BeltBlock.PART) != BeltPart.MIDDLE) {
                 requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Items.shaft));
@@ -52,7 +50,6 @@ public class BeltPlacementHandler implements IPlacementHandler {
                     for (final var itemEntity : itemEntities) {
                         if (itemEntity instanceof CompoundTag itemEntityTag) {
                             var itemTag = itemEntityTag.getCompound("Item");
-                            LOGGER.debug("\t\t{}\n\t\t{}", itemEntityTag, itemTag);
                             requiredItems.add(ItemStack.of(itemTag));
                         }
                     }

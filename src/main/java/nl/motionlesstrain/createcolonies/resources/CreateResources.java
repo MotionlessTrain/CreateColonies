@@ -18,6 +18,15 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:block", value = "create:belt")
         public static Block belt = null;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:andesite_encased_shaft")
+        public static Block andesiteEncasedShaft;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:brass_encased_shaft")
+        public static Block brassEncasedShaft;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:encased_fluid_pipe")
+        public static Block encasedFluidPipe;
     }
 
     public static class Items {
@@ -33,7 +42,13 @@ public class CreateResources {
         @ObjectHolder(registryName = "minecraft:item", value = "create:andesite_casing")
         public static Item andesiteCasing = null;
 
+        @ObjectHolder(registryName = "minecraft:item", value = "create:brass_casing")
+        public static Item brassCasing = null;
+
         @ObjectHolder(registryName = "minecraft:item", value = "create:shaft")
         public static Item shaft;
+
+        @ObjectHolder(registryName = "minecraft:item", value = "create:fluid_pipe")
+        public static Item fluidPipe;
     }
 }
