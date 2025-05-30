@@ -20,6 +20,7 @@ public class PlacementHandlers {
     }
     public static void initialiseHandlers(FMLLoadCompleteEvent ignored) {
         // TODO: Encased blocks (SimplePlacementHandlers to fix material cost)
+        // TODO: Copycat panel and step (can dupe blocks)
         // TODO: Station (doesn't rotate)
         // TODO: Some other fix for curved rails? If there seems to be a solution for belts as well?
         // TODO: (Low Priority) rotating blocks?????
