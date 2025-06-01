@@ -3,31 +3,23 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 import com.ldtteam.structurize.api.util.constant.Constants;
 import com.ldtteam.structurize.placement.handlers.placement.IPlacementHandler;
 import com.ldtteam.structurize.util.PlacementSettings;
-import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers.handleTileEntityPlacement;
 
 public class BeltPlacementHandler implements IPlacementHandler {
-    private static final Logger LOGGER = LogUtils.getLogger();
-
     @Override
     public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
         return blockState.is(CreateResources.Blocks.belt);
@@ -62,7 +54,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
 
     private record BeltInfo(BlockPos pos, BlockState state, @Nullable CompoundTag tag) {}
 
-    private final Map<BlockPos, List<BeltInfo>> beltParts = new HashMap<>();
+    private final Map<BlockPos, SortedMap<BlockPos, BeltInfo>> beltParts = new HashMap<>();
     @Override
     public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, @SuppressWarnings("removal") PlacementSettings settings) {
         if (tileEntityData == null) return ActionProcessingResult.DENY;
@@ -75,15 +67,14 @@ public class BeltPlacementHandler implements IPlacementHandler {
 
         final var length = tileEntityData.getInt("Length");
 
-        final var knownBeltParts = beltParts.computeIfAbsent(controllerPos, ignored -> new ArrayList<>());
-        knownBeltParts.add(new BeltInfo(pos, blockState, tileEntityData));
+        final var knownBeltParts = beltParts.computeIfAbsent(controllerPos, ignored -> new TreeMap<>());
+        knownBeltParts.put(pos, new BeltInfo(pos, blockState, tileEntityData));
 
         if (knownBeltParts.size() == length) {
-            for (final var lit = knownBeltParts.listIterator(); lit.hasNext();) {
-                final var info = lit.next();
-                if(!world.setBlock(info.pos(), info.state(), Constants.UPDATE_FLAG)) {
-                    while (lit.hasPrevious()) {
-                        final var alreadyPlaced = lit.previous();
+            for (final Map.Entry<BlockPos, BeltInfo> entry : knownBeltParts.entrySet()) {
+                final var info = entry.getValue();
+                if (!world.setBlock(info.pos(), info.state(), Constants.UPDATE_FLAG)) {
+                    for (final var alreadyPlaced : knownBeltParts.headMap(entry.getKey()).values()) {
                         world.removeBlock(alreadyPlaced.pos(), false);
                     }
                     return ActionProcessingResult.DENY;

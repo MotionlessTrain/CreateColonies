@@ -19,11 +19,12 @@ public class PlacementHandlers {
         com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers.add(handler);
     }
     public static void initialiseHandlers(FMLLoadCompleteEvent ignored) {
-        // TODO: Copycat panel and step (can dupe blocks)
         // TODO: Station (doesn't rotate)
         // TODO: Some other fix for curved rails? If there seems to be a solution for belts as well?
+        // TODO: Steam boilers?
         // TODO: (Low Priority) rotating blocks?????
         addHandler(new BeltPlacementHandler());
+        addHandler(new CopyCatPlacementHandler());
         addHandler(new EncasedShaftPlacementHandler());
         addHandler(new EncasedPipePlacementHandler());
         addHandler(new TrainBogeyPlacementHandler());

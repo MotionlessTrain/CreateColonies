@@ -27,6 +27,12 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:block", value = "create:encased_fluid_pipe")
         public static Block encasedFluidPipe;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:copycat_step")
+        public static Block copycatStep;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:copycat_panel")
+        public static Block copycatPanel;
     }
 
     public static class Items {
