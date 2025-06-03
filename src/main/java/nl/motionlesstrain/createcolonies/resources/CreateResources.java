@@ -33,6 +33,9 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:block", value = "create:copycat_panel")
         public static Block copycatPanel;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:track_station")
+        public static Block trackStation;
     }
 
     public static class Items {

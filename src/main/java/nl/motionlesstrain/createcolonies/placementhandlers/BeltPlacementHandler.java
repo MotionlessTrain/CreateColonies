@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
+import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,10 +61,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
         if (tileEntityData == null) return ActionProcessingResult.DENY;
 
         final var controller = tileEntityData.getCompound("Controller");
-        final int x = controller.getInt("X");
-        final int y = controller.getInt("Y");
-        final int z = controller.getInt("Z");
-        final var controllerPos = new BlockPos(x, y, z);
+        final var controllerPos = BlockPosUtil.fromNBT(controller);
 
         final var length = tileEntityData.getInt("Length");
 

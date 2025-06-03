@@ -20,7 +20,7 @@ public class PlacementHandlers {
     }
     public static void initialiseHandlers(FMLLoadCompleteEvent ignored) {
         // TODO: Station (doesn't rotate)
-        // TODO: Some other fix for curved rails? If there seems to be a solution for belts as well?
+        // TODO: Some other fix for curved rails?
         // TODO: Steam boilers?
         // TODO: (Low Priority) rotating blocks?????
         addHandler(new BeltPlacementHandler());
@@ -28,6 +28,7 @@ public class PlacementHandlers {
         addHandler(new EncasedShaftPlacementHandler());
         addHandler(new EncasedPipePlacementHandler());
         addHandler(new TrainBogeyPlacementHandler());
+        addHandler(new TrainStationPlacementHandler());
         addHandler(new TrackPlacementHandler());
         addHandler(new DebugPlacementHandler());
     }
