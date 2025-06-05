@@ -4,11 +4,9 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
 import com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers;
 import com.ldtteam.structurize.util.PlacementSettings;
-import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.trains.track.TrackBlock;
 import com.simibubi.create.content.trains.track.TrackShape;
 import net.minecraft.core.BlockPos;
-import static net.minecraft.core.Direction.Axis;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.Level;
@@ -17,13 +15,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
+
+import static net.minecraft.core.Direction.Axis;
 
 public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlockPlacementHandler {
-
     @Override
     public boolean canHandle(Level world, BlockPos pos, BlockState blockState) {
-        return blockState.is(CreateResources.Blocks.trackStation);
+        return blockState.is(CreateResources.Blocks.trackStation) || blockState.is(CreateResources.Blocks.trackSignal)
+                || blockState.is(CreateResources.Blocks.trackObserver);
     }
 
     private Tuple<BlockPos, CompoundTag> fixTargetTrack(CompoundTag targetTrack, Rotation rotation) {
@@ -32,8 +31,6 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
         final CompoundTag newTargetTrackData = BlockPosUtil.toNBT(newTargetTrack);
         return new Tuple<>(newTargetTrack, newTargetTrackData);
     }
-
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     @Override
     public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, PlacementSettings settings) {

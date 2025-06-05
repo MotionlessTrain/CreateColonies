@@ -19,17 +19,19 @@ public class PlacementHandlers {
         com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers.add(handler);
     }
     public static void initialiseHandlers(FMLLoadCompleteEvent ignored) {
-        // TODO: Station (doesn't rotate)
         // TODO: Some other fix for curved rails?
         // TODO: Steam boilers?
         // TODO: (Low Priority) rotating blocks?????
+        // Other handlers sometimes need to delay their placement until the corresponding rail has been placed
+        // They register that in the trackPlacementHandler
+        final TrackPlacementHandler trackHandler = new TrackPlacementHandler();
         addHandler(new BeltPlacementHandler());
         addHandler(new CopyCatPlacementHandler());
         addHandler(new EncasedShaftPlacementHandler());
         addHandler(new EncasedPipePlacementHandler());
         addHandler(new TrainBogeyPlacementHandler());
         addHandler(new TrainStationPlacementHandler());
-        addHandler(new TrackPlacementHandler());
+        addHandler(trackHandler);
         addHandler(new DebugPlacementHandler());
     }
 

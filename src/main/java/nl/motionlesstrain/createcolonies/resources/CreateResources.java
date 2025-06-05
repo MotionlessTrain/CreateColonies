@@ -13,6 +13,9 @@ public class CreateResources {
         @ObjectHolder(registryName = "minecraft:block", value = "create:large_bogey")
         public static Block largeBogey = null;
 
+        @ObjectHolder(registryName = "minecraft:block", value = "create:track")
+        public static Block track = null;
+
         @ObjectHolder(registryName = "minecraft:block", value = "create:fake_track")
         public static Block fakeTrack = null;
 
@@ -36,6 +39,12 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:block", value = "create:track_station")
         public static Block trackStation;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:track_signal")
+        public static Block trackSignal;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:track_observer")
+        public static Block trackObserver;
     }
 
     public static class Items {
