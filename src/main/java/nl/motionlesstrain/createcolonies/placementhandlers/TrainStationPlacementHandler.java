@@ -4,6 +4,7 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
 import com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers;
 import com.ldtteam.structurize.util.PlacementSettings;
+import com.ldtteam.structurize.util.RotationMirror;
 import com.simibubi.create.content.trains.track.TrackBlock;
 import com.simibubi.create.content.trains.track.TrackShape;
 import net.minecraft.core.BlockPos;
@@ -25,9 +26,12 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
                 || blockState.is(CreateResources.Blocks.trackObserver);
     }
 
-    private Tuple<BlockPos, CompoundTag> fixTargetTrack(CompoundTag targetTrack, Rotation rotation) {
-        final BlockPos targetTrackPos = BlockPosUtil.fromNBT(targetTrack);
-        final BlockPos newTargetTrack = targetTrackPos.rotate(rotation);
+    private Tuple<BlockPos, CompoundTag> fixTargetTrack(CompoundTag targetTrack, RotationMirror rotationMirror) {
+        BlockPos targetTrackPos = BlockPosUtil.fromNBT(targetTrack);
+        if (rotationMirror.isMirrored()) {
+            targetTrackPos = new BlockPos(-targetTrackPos.getX(), targetTrackPos.getY(), targetTrackPos.getZ());
+        }
+        final BlockPos newTargetTrack = targetTrackPos.rotate(rotationMirror.rotation());
         final CompoundTag newTargetTrackData = BlockPosUtil.toNBT(newTargetTrack);
         return new Tuple<>(newTargetTrack, newTargetTrackData);
     }
@@ -35,7 +39,7 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
     @Override
     public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, PlacementSettings settings) {
         if (tileEntityData != null && tileEntityData.contains("TargetTrack")) {
-            @SuppressWarnings("removal") final Rotation blueprintRotation = settings.getRotation();
+            final RotationMirror blueprintRotation = blueprint.getRotationMirror();
             final var newData = fixTargetTrack(tileEntityData.getCompound("TargetTrack"), blueprintRotation);
 
             final BlockPos bottomLeftCorner = centerPos.subtract(blueprint.getPrimaryBlockOffset());
@@ -47,7 +51,7 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
                 final TrackShape shape = trackState.getValue(TrackBlock.SHAPE);
 
                 final Axis currentTrackAxis = shape == TrackShape.XO ? Axis.X : Axis.Z;
-                final Axis originalTrackAxis = switch(blueprintRotation) {
+                final Axis originalTrackAxis = switch(blueprintRotation.rotation()) {
                     case CLOCKWISE_90, COUNTERCLOCKWISE_90 -> currentTrackAxis == Axis.X ? Axis.Z : Axis.X;
                     case CLOCKWISE_180, NONE -> currentTrackAxis;
                 };
@@ -61,7 +65,8 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
                 // We use that to find out what the new TargetDirection should be
                 final byte encodedDirection = (byte)((tileEntityData.getByte("TargetDirection") != 0 ? 2 : 0) |
                         (originalTrackAxis == Axis.Z ? 1 : 0));
-                final byte rotatedDirection = (byte)((encodedDirection + blueprintRotation.ordinal()) % 4);
+                final byte mirroredDirection = blueprintRotation.isMirrored() ? (byte)((2 - encodedDirection) % 4) : encodedDirection;
+                final byte rotatedDirection = (byte)((mirroredDirection + blueprintRotation.rotation().ordinal()) % 4);
                 final byte newTargetDirection = (byte)((rotatedDirection & 2) >> 1);
                 tileEntityData.putByte("TargetDirection", newTargetDirection);
             }
@@ -69,17 +74,6 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
             tileEntityData.put("TargetTrack", newData.getB());
         }
 
-        return super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
-    }
-
-    @Override
-    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, @SuppressWarnings("removal") PlacementSettings settings) {
-        if (tileEntityData != null && tileEntityData.contains("TargetTrack")) {
-            @SuppressWarnings("removal")
-            final Rotation blueprintRotation = settings.getRotation();
-            final var newData = fixTargetTrack(tileEntityData.getCompound("TargetTrack"), blueprintRotation);
-            tileEntityData.put("TargetTrack", newData.getB());
-        }
         return super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
     }
 }
