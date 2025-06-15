@@ -14,7 +14,7 @@ public class ItemUtils {
         return stackFromNullable(item, count, null);
     }
     public static ItemStack stackFromNullable(@Nullable Item item, int count, CompoundTag tag) {
-        if (item == null) {
+        if (item == null || count == 0) {
             return ItemStack.EMPTY;
         }
         return new ItemStack(item, count, tag);

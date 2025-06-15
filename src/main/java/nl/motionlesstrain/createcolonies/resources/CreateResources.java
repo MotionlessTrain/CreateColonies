@@ -68,5 +68,8 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:item", value = "create:fluid_pipe")
         public static Item fluidPipe;
+
+        @ObjectHolder(registryName = "minecraft:item", value = "create:metal_girder")
+        public static Item metalGirder;
     }
 }

@@ -9,17 +9,14 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static nl.motionlesstrain.createcolonies.utils.BlockPosUtil.DoubleBlockPos;
 
@@ -27,18 +24,43 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
 
   @Override
   public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
-    return blockState.is(CreateResources.Blocks.track) || blockState.is(CreateResources.Blocks.fakeTrack);
+    return blockState.is(CreateResources.Blocks.track);
   }
 
   @Override
   public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
-    return List.of(ItemUtils.stackFromNullable(CreateResources.Items.track));
-  }
 
-  private Map<BlockPos, List<Runnable>> dependents = new HashMap<>();
+    final List<ItemStack> neededItems = new ArrayList<>();
+    neededItems.add(ItemUtils.stackFromNullable(CreateResources.Items.track));
 
-  public void addDependent(BlockPos pos, Runnable action) {
-    dependents.computeIfAbsent(pos, ignored -> new LinkedList<>()).add(action);
+    if (blockState.is(CreateResources.Blocks.track) &&
+        compoundTag != null && compoundTag.contains("Connections")) {
+      final ListTag connections = compoundTag.getList("Connections", Tag.TAG_COMPOUND);
+      for (int i = 0; i < connections.size(); i++) {
+        final var connection = connections.getCompound(i);
+        if (connection.getByte("Primary") != 0 &&
+            connection.contains("Positions", Tag.TAG_LIST)) {
+          final ListTag positionInfo = connection.getList("Positions", Tag.TAG_COMPOUND);
+          BlockPos[] positions = new BlockPos[positionInfo.size()];
+          for (int j = 0; j < positionInfo.size(); j++) {
+            final var positionObj = positionInfo.getCompound(j);
+            BlockPos position = BlockPosUtil.fromNBT(positionObj);
+            positions[j] = position;
+          }
+          if (positions.length == 2) {
+            final int deltaX = Math.abs(positions[0].getX() - positions[1].getX());
+            final int deltaZ = Math.abs(positions[0].getZ() - positions[1].getZ());
+            final int trackAmount = (deltaX == 0 || deltaZ == 0) ? deltaX + deltaZ : deltaX * 3/2;
+            neededItems.add(ItemUtils.stackFromNullable(CreateResources.Items.track, trackAmount));
+
+            if (connection.getByte("Girder") != 0) {
+              neededItems.add(ItemUtils.stackFromNullable(CreateResources.Items.metalGirder, trackAmount * 2));
+            }
+          }
+        }
+      }
+    }
+    return neededItems;
   }
 
   private final String[] VECTOR_TYPES = {"Starts", "Normals", "Axes"};
@@ -97,12 +119,6 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
       }
     }
 
-    ActionProcessingResult result = super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
-
-    if (result != ActionProcessingResult.DENY) {
-      final var actions = dependents.remove(pos);
-      if (actions != null) actions.forEach(Runnable::run);
-    }
-    return result;
+    return super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
   }
 }
