@@ -54,7 +54,7 @@ jobs:
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build -Pmod_version=${{ needs.get-versions.outputs.mod_version }}
+        run: ./gradlew --build-cache build -Pmod_version=${{ needs.get-versions.outputs.mod_version }}
 
       - name: Create Github Release
         id: createRelease
