@@ -12,6 +12,9 @@ on:
     tags:
       - v*.*.*
 
+permissions:
+  contents: write
+
 jobs:
   get-versions:
     runs-on: ubuntu-latest
@@ -20,6 +23,8 @@ jobs:
       minecraft_version: ${{ steps.retrieveMinecraftVersion.outputs.minecraft_version }}
       mod_version: ${{ steps.retrieveModVersion.outputs.mod_version }}
     steps:
+      - uses: actions/checkout@v4
+
       - id: retrieveMinecraftVersion
         name: "Retrieve Minecraft Version"
         run: echo "minecraft_version=$(grep minecraft_version gradle.properties | cut -d "=" -f 2)" >> "$GITHUB_OUTPUT"
@@ -82,23 +87,3 @@ jobs:
       #
       # - name: Build with Gradle 8.9
       #   run: gradle build
-
-  dependency-submission:
-
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-      # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
