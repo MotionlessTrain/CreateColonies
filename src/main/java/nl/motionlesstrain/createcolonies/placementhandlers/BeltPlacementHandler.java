@@ -26,6 +26,8 @@ public class BeltPlacementHandler implements IPlacementHandler {
         return blockState.is(CreateResources.Blocks.belt);
     }
 
+    private final Map<BlockPos, Map<BlockPos, List<ItemStack>>> beltItems = new HashMap<>();
+
     @Override
     public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
         final List<ItemStack> requiredItems = new ArrayList<>();
@@ -36,8 +38,8 @@ public class BeltPlacementHandler implements IPlacementHandler {
             }
             if (blockState.getValue(BeltBlock.PART) == BeltPart.START) {
                 requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Items.belt));
+                // The start one seems to have an inventory
                 if (compoundTag != null && compoundTag.contains("Inventory", Tag.TAG_COMPOUND)) {
-
                     final var inventoryCompound = compoundTag.getCompound("Inventory");
                     final var itemEntities = inventoryCompound.getList("Items", Tag.TAG_COMPOUND);
                     for (final var itemEntity : itemEntities) {
@@ -49,7 +51,30 @@ public class BeltPlacementHandler implements IPlacementHandler {
                 }
             }
         }
-        // The start one seems to have an inventory
+
+        if (compoundTag != null) {
+
+            final var controller = compoundTag.getCompound("Controller");
+            final var controllerPos = BlockPosUtil.fromNBT(controller);
+
+            final var allBeltItems = beltItems.computeIfAbsent(controllerPos, ignored -> new HashMap<>());
+
+            final var length = compoundTag.getInt("Length");
+
+            // If we are at the end of the belt, we know the entire belt is within the schematic, and we list the resources for it
+            if (allBeltItems.size() + 1 == length && !allBeltItems.containsKey(blockPos)) {
+                for (var items : allBeltItems.values()) {
+                    requiredItems.addAll(items);
+                    items.clear();
+                }
+                allBeltItems.put(blockPos, requiredItems);
+            } else if (allBeltItems.size() < length) {
+                allBeltItems.put(blockPos, requiredItems);
+                return List.of();
+            } else {
+                return allBeltItems.getOrDefault(blockPos, List.of());
+            }
+        }
         return requiredItems;
     }
 
@@ -80,6 +105,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
                 handleTileEntityPlacement(info.tag(), world, info.pos(), settings);
             }
             beltParts.remove(controllerPos);
+            beltItems.remove(controllerPos);
         }
 
         return ActionProcessingResult.SUCCESS;
