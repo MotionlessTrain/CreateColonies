@@ -12,8 +12,8 @@ on:
     tags:
       - v*.*.*
 
-    permissions:
-      contents: write
+permissions:
+  contents: write
 
 jobs:
   get-versions:
