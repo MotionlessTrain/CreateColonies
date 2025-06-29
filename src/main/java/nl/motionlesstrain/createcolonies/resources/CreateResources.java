@@ -45,6 +45,9 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:block", value = "create:track_observer")
         public static Block trackObserver;
+
+        @ObjectHolder(registryName = "minecraft:block", value = "create:deployer")
+        public static Block deployer;
     }
 
     public static class Items {
@@ -57,12 +60,6 @@ public class CreateResources {
         @ObjectHolder(registryName = "minecraft:item", value = "create:belt_connector")
         public static Item belt = null;
 
-        @ObjectHolder(registryName = "minecraft:item", value = "create:andesite_casing")
-        public static Item andesiteCasing = null;
-
-        @ObjectHolder(registryName = "minecraft:item", value = "create:brass_casing")
-        public static Item brassCasing = null;
-
         @ObjectHolder(registryName = "minecraft:item", value = "create:shaft")
         public static Item shaft;
 
@@ -71,5 +68,8 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:item", value = "create:metal_girder")
         public static Item metalGirder;
+
+        @ObjectHolder(registryName = "minecraft:item", value = "create:deployer")
+        public static Item deployer;
     }
 }
