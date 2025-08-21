@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 0.1.2
+
+### Patch Changes
+
+- chore: make an automatic mod release when a new release is made ([`1f2e587`](https://github.com/MotionlessTrain/CreateColonies/commit/1f2e5872fba2ca3a2dd40c91acec7dc5ed8bf739))
+
 ## 0.1.1
 
 ### Patch Changes
