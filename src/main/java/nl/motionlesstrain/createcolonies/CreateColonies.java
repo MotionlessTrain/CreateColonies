@@ -27,6 +27,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
+import nl.motionlesstrain.createcolonies.hooks.HooksInitialiser;
 import nl.motionlesstrain.createcolonies.placementhandlers.PlacementHandlers;
 import org.slf4j.Logger;
 
@@ -84,6 +86,11 @@ public class CreateColonies {
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        // Register the event listeners, e.g. for items outside our control
+        HooksInitialiser.registerHooks();
+        // And initialise the compatibility code, for non-required dependencies
+        Minecolonies.initialiseCompat();
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

@@ -174,11 +174,18 @@ dependencies {
     implementation (fg.deobf("com.ldtteam:structurize:${structurize_version}")){
         transitive = false
     }
+    /*
+    // When testing without minecolonies installed
+    compileOnly (fg.deobf("com.ldtteam:minecolonies:${minecolonies_version}")){
+        transitive = false
+    }
+    */
+    // When testing with minecolonies installed
     implementation (fg.deobf("com.ldtteam:minecolonies:${minecolonies_version}")){
         transitive = false
     }
     runtimeOnly (fg.deobf("com.ldtteam:blockui:${blockui_version}"))
-    runtimeOnly (fg.deobf("com.ldtteam:domum_ornamentum:${domum_ornamentum_version}"))
+    implementation (fg.deobf("com.ldtteam:domum_ornamentum:${domum_ornamentum_version}"))
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
