@@ -8,9 +8,8 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    tags:
-      - v*.*.*
+  release:
+    types: [created]
 
 permissions:
   contents: write
@@ -56,23 +55,13 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew --build-cache build -Pmod_version=${{ needs.get-versions.outputs.mod_version }}
 
-      - name: Create Github Release
-        id: createRelease
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Version ${{ needs.get-versions.outputs.mod_version }}
-          draft: false
-          prerelease: false
       - name: Upload Mod
         id: uploadMod
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.createRelease.outputs.upload_url }}
+          upload_url: ${{ github.event.release.upload_url }}
           asset_path: ./build/libs/createcolonies-${{ needs.get-versions.outputs.mod_version }}.jar
           asset_name: CreateColonies-${{ needs.get-versions.outputs.minecraft_version }}-${{ needs.get-versions.outputs.mod_version }}.jar
           asset_content_type: application/java-archive
