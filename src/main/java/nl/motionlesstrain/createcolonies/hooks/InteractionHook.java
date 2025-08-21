@@ -2,8 +2,17 @@ package nl.motionlesstrain.createcolonies.hooks;
 
 import com.minecolonies.api.colony.buildings.IBuilding;
 import com.minecolonies.api.tileentities.AbstractTileEntityColonyBuilding;
-import com.mojang.logging.LogUtils;
+import com.simibubi.create.content.equipment.clipboard.ClipboardEntry;
+import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -14,15 +23,14 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
-import org.slf4j.Logger;
 
 import java.util.TreeMap;
 
 import static com.minecolonies.core.colony.buildings.modules.BuildingModules.BUILDING_RESOURCES;
+import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.clipboard;
 import static nl.motionlesstrain.createcolonies.resources.MinecoloniesResources.Blocks.blockHutBuilder;
 
 public class InteractionHook {
-  private static final Logger LOGGER = LogUtils.getLogger();
 
   @SubscribeEvent
   public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock evt) {
@@ -33,8 +41,11 @@ public class InteractionHook {
     final BlockPos blockPosClicked = evt.getHitVec().getBlockPos();
     final BlockState blockStateClicked = world.getBlockState(blockPosClicked);
 
-    if (blockHutBuilder != null && blockStateClicked.is(blockHutBuilder)) {
+    final ItemStack heldItem = evt.getItemStack();
+
+    if (blockHutBuilder != null && blockStateClicked.is(blockHutBuilder) && clipboard != null && heldItem.is(clipboard)) {
       evt.setCanceled(true);
+      evt.setCancellationResult(InteractionResult.SUCCESS);
       evt.setResult(Event.Result.DENY);
       if (evt.getSide().isClient()) return;
 
@@ -59,10 +70,46 @@ public class InteractionHook {
                     new NeededItem(itemStack, neededAmount, entireAmount));
               }
             });
-            neededResources.forEach((name, neededItem) -> {
-              System.out.println(name + ": " + neededItem.count() + "(" + neededItem.totalCount() + ")");
-            });
-            // TODO: fill clipboard with this information
+            // Inspired by MaterialChecklist, which is part of the schematicannon code to write resources into a clipboard
+            final CompoundTag tag = heldItem.getOrCreateTag();
+            final ListTag pagesNBT = new ListTag();
+            tag.put("Pages", pagesNBT);
+            ListTag entriesNBT = new ListTag();
+            int i = 0;
+            for (final var neededItem : neededResources.values()) {
+              final MutableComponent text = Component.translatable(neededItem.item.getDescriptionId()).setStyle(
+                  Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(neededItem.item)))
+              ).append(
+                  Component.literal("\n x" + neededItem.count).withStyle(ChatFormatting.BLACK)
+              ).append(
+                  Component.literal(" | " + neededItem.count / 64 + "▤ +" + neededItem.count % 64).withStyle(ChatFormatting.GRAY)
+              );
+              entriesNBT.add(
+                  new ClipboardEntry(neededItem.count == 0, text).displayItem(neededItem.item, neededItem.count).writeNBT());
+
+              if (++i == 7) {
+                entriesNBT.add(
+                    new ClipboardEntry(false, Component.literal(">>>").withStyle(ChatFormatting.DARK_GRAY)).writeNBT());
+                final CompoundTag pageNBT = new CompoundTag();
+                pageNBT.put("Entries", entriesNBT);
+                pagesNBT.add(pageNBT);
+                entriesNBT = new ListTag();
+                i = 0;
+              }
+            }
+            if (i > 0) {
+              final CompoundTag pageNBT = new CompoundTag();
+              pageNBT.put("Entries", entriesNBT);
+              pagesNBT.add(pageNBT);
+            }
+            ClipboardOverrides.switchTo(ClipboardOverrides.ClipboardType.WRITTEN, heldItem);
+            heldItem.getOrCreateTagElement("display").putString("Name", Component.Serializer.toJson(Component.translatable("create.materialChecklist").setStyle(Style.EMPTY.withItalic(Boolean.FALSE))));
+            tag.putBoolean("Readonly", true);
+            heldItem.setTag(tag);
+
+            final Component message = Component.translatable("nl.motionlesstrain.createcolonies.clipboard.registered",
+                Component.translatable(building.getBuildingDisplayName())).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));
+            player.displayClientMessage(message, false);
           }
         }
       });

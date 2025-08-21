@@ -71,5 +71,8 @@ public class CreateResources {
 
         @ObjectHolder(registryName = "minecraft:item", value = "create:deployer")
         public static Item deployer;
+
+        @ObjectHolder(registryName = "minecraft:item", value = "create:clipboard")
+        public static Item clipboard;
     }
 }
