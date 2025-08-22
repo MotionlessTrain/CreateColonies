@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 0.1.3
+
+### Patch Changes
+
+- chore: automate the upload to CurseForge ([`ede0cc6`](https://github.com/MotionlessTrain/CreateColonies/commit/ede0cc6d11649935982a61588f7c95f5d3e19070))
+
 ## 0.1.2
 
 ### Patch Changes
