@@ -71,7 +71,8 @@ jobs:
         with:
           file_path: ./build/libs/createcolonies-${{ needs.get-versions.outputs.mod_version }}.jar
           game_endpoint: minecraft
-          game_versions: "Minecraft:${{ needs.get_versions.outputs.minecraft_version }},Java 17,Forge"
+          game_versions: "${{ needs.get_versions.outputs.minecraft_version }},Java 17,Forge"
           project_id: "1332665"
           token: "${{ secrets.CURSE_TOKEN }}"
           changelog: ${{ github.event.release.body }}
+          display_name: CreateColonies-${{ needs.get-versions.outputs.minecraft_version }}-${{ needs.get-versions.outputs.mod_version }}.jar
