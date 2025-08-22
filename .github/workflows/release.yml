@@ -66,13 +66,12 @@ jobs:
           asset_name: CreateColonies-${{ needs.get-versions.outputs.minecraft_version }}-${{ needs.get-versions.outputs.mod_version }}.jar
           asset_content_type: application/java-archive
 
-      # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-      # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-      #
-      # - name: Setup Gradle
-      #   uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-      #   with:
-      #     gradle-version: '8.9'
-      #
-      # - name: Build with Gradle 8.9
-      #   run: gradle build
+      - name: Upload to CurseForge
+        uses: itsmeow/curseforge-upload@v3
+        with:
+          file_path: ./build/libs/createcolonies-${{ needs.get-versions.outputs.mod_version }}.jar
+          game_endpoint: minecraft
+          game_versions: "Minecraft:${{ needs.get_versions.outputs.minecraft_version }},Java 17,Forge"
+          project_id: "1332665"
+          token: "${{ secrets.CURSE_TOKEN }}"
+          changelog: ${{ github.event.release.body }}
