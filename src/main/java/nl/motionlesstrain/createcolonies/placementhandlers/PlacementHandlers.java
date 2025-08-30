@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import nl.motionlesstrain.createcolonies.CommonConfig;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -24,10 +25,13 @@ public class PlacementHandlers {
         addHandler(new DeployerPlacementHandler());
         addHandler(new EncasedShaftPlacementHandler());
         addHandler(new EncasedPipePlacementHandler());
+        addHandler(new GearPlacementHandler());
         addHandler(new TrainBogeyPlacementHandler());
         addHandler(new TrainStationPlacementHandler());
         addHandler(new TrackPlacementHandler());
-        addHandler(new DebugPlacementHandler());
+        if (CommonConfig.debugLog) {
+          addHandler(new DebugPlacementHandler());
+        }
     }
 
     private static class DebugPlacementHandler implements IPlacementHandler {
