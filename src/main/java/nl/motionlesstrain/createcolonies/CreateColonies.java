@@ -23,6 +23,8 @@ public class CreateColonies {
         modEventBus.addListener(PlacementHandlers::initialiseHandlers);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
+        CommonConfig.registerConfig();
+        modEventBus.addListener(CommonConfig::loadSettings);
 
         // Register the event listeners, e.g. for items outside our control
         HooksInitialiser.registerHooks();
