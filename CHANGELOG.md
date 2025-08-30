@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 0.1.4
+
+### Patch Changes
+
+- fix: when encased gears are present in a schematic, require the non-encased version of those gears instead (fixes [#8](https://github.com/MotionlessTrain/CreateColonies/issues/8)) ([#9](https://github.com/MotionlessTrain/CreateColonies/pull/9))
+
 ## 0.1.3
 
 ### Patch Changes
