@@ -25,6 +25,7 @@ public class PlacementHandlers {
         addHandler(new DeployerPlacementHandler());
         addHandler(new EncasedShaftPlacementHandler());
         addHandler(new EncasedPipePlacementHandler());
+        addHandler(new GearPlacementHandler());
         addHandler(new TrainBogeyPlacementHandler());
         addHandler(new TrainStationPlacementHandler());
         addHandler(new TrackPlacementHandler());
