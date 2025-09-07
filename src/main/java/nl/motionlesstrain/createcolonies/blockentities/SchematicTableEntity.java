@@ -17,6 +17,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.emptySchematic;
+import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.schematic;
+import static nl.motionlesstrain.createcolonies.resources.StructurizeResources.Items.buildTool;
+import static nl.motionlesstrain.createcolonies.resources.StructurizeResources.Items.scanTool;
+
 public class SchematicTableEntity extends BlockEntity {
   public SchematicTableEntity(BlockPos p_155229_, BlockState p_155230_) {
     super(CreateColoniesResources.BlockEntities.schematicTableEntity.get(), p_155229_, p_155230_);
@@ -28,7 +33,7 @@ public class SchematicTableEntity extends BlockEntity {
     return createBlueprint;
   }
 
-  public void setCreateBlueprint(@NotNull ItemStack createBlueprint) {
+  private void setCreateBlueprint(@NotNull ItemStack createBlueprint) {
     this.createBlueprint = createBlueprint;
     setChanged();
   }
@@ -37,7 +42,7 @@ public class SchematicTableEntity extends BlockEntity {
     return structurizeTool;
   }
 
-  public void setStructurizeTool(@NotNull ItemStack structurizeTool) {
+  private void setStructurizeTool(@NotNull ItemStack structurizeTool) {
     this.structurizeTool = structurizeTool;
     setChanged();
   }
@@ -120,9 +125,12 @@ public class SchematicTableEntity extends BlockEntity {
     }
 
     @Override
-    public boolean isItemValid(int i, @NotNull ItemStack itemStack) {
-      // TODO. Also in the other setters
-      return true;
+    public boolean isItemValid(int slot, @NotNull ItemStack itemStack) {
+      return switch (slot) {
+        case 0 -> itemStack.isEmpty() || itemStack.is(schematic) || itemStack.is(emptySchematic);
+        case 1 -> itemStack.isEmpty() || itemStack.is(scanTool) || itemStack.is(buildTool);
+        default -> false;
+      };
     }
   }
 

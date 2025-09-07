@@ -1,3 +1,4 @@
 {
-  "nl.motionlesstrain.createcolonies.clipboard.registered": "The required resources of %s are noted down on the clipboard"
+  "nl.motionlesstrain.createcolonies.clipboard.registered": "The required resources of %s are noted down on the clipboard",
+  "menu.title.createcolonies.schematic_table_menu": "Schematic Table"
 }

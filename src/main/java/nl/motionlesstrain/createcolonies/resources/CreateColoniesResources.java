@@ -1,6 +1,8 @@
 package nl.motionlesstrain.createcolonies.resources;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -13,8 +15,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import nl.motionlesstrain.createcolonies.blockentities.SchematicTableEntity;
 import nl.motionlesstrain.createcolonies.blocks.SchematicTableBlock;
+import nl.motionlesstrain.createcolonies.gui.SchematicTableMenu;
 
 import static net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB;
+import static net.minecraft.core.registries.Registries.MENU;
 import static nl.motionlesstrain.createcolonies.CreateColonies.MODID;
 
 public class CreateColoniesResources {
@@ -52,5 +56,13 @@ public class CreateColoniesResources {
         event.accept(Blocks.schematicTable.get());
       }
     }
+  }
+
+  public static class Menus {
+    public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(MENU, MODID);
+
+    public static final RegistryObject<MenuType<SchematicTableMenu>> schematicTableMenu =
+        REGISTRY.register("schematic_table_menu", () ->
+            new MenuType<>(SchematicTableMenu::new, FeatureFlags.DEFAULT_FLAGS));
   }
 }

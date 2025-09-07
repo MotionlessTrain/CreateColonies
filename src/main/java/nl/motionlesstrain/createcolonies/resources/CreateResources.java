@@ -89,5 +89,11 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:item", value = "create:large_cogwheel")
     public static Item largeCogwheel;
+
+    @ObjectHolder(registryName = "minecraft:item", value = "create:empty_schematic")
+    public static Item emptySchematic;
+
+    @ObjectHolder(registryName = "minecraft:item", value = "create:schematic")
+    public static Item schematic;
   }
 }
