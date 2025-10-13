@@ -2,7 +2,7 @@
 name: Create - Structurize compatibility reques
 about: Suggest compatibility in Structurize for Create blocks
 title: ''
-labels: ''
+labels: Compatibility
 assignees: ''
 
 ---
