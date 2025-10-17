@@ -10,6 +10,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
 import nl.motionlesstrain.createcolonies.gui.SchematicTableScreen;
 import nl.motionlesstrain.createcolonies.hooks.HooksInitialiser;
+import nl.motionlesstrain.createcolonies.network.MessagesHandler;
 import nl.motionlesstrain.createcolonies.placementhandlers.PlacementHandlers;
 import nl.motionlesstrain.createcolonies.resources.CreateColoniesResources;
 
@@ -37,6 +38,8 @@ public class CreateColonies {
     // Register our config
     CommonConfig.registerConfig();
     modEventBus.addListener(CommonConfig::loadSettings);
+
+    modEventBus.addListener(MessagesHandler::setUpNetwork);
 
     // Register the event listeners, e.g. for items outside our control
     HooksInitialiser.registerHooks();

@@ -35,15 +35,7 @@ public class SchematicTableBlock extends Block implements EntityBlock {
   public @Nullable MenuProvider getMenuProvider(@NotNull BlockState any, @NotNull Level world, @NotNull BlockPos pos) {
     final BlockEntity blockEntity = world.getBlockEntity(pos);
     if (blockEntity instanceof SchematicTableEntity stEntity) {
-      final LazyOptional<IItemHandler> inventory = stEntity.getCapability(ForgeCapabilities.ITEM_HANDLER);
-      if (inventory.isPresent()) {
-        return new SimpleMenuProvider(
-            (containerId, playerInventory, ignored) ->
-                new SchematicTableMenu(containerId, playerInventory, ContainerLevelAccess.create(world, pos),
-                    inventory.orElseThrow(() -> new IllegalStateException("The schematic table lost its inventory somehow"))),
-            Component.translatable("menu.title.createcolonies.schematic_table_menu")
-        );
-      }
+      return stEntity.getMenuProvider();
     }
     return null;
   }
@@ -53,7 +45,10 @@ public class SchematicTableBlock extends Block implements EntityBlock {
   public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos,
                                         @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
     if (!world.isClientSide()) {
-      player.openMenu(state.getMenuProvider(world, pos));
+      final BlockEntity blockEntity = world.getBlockEntity(pos);
+      if (blockEntity instanceof SchematicTableEntity stEntity) {
+        stEntity.openMenuForPlayer(player);
+      } else return InteractionResult.FAIL;
     }
     return InteractionResult.sidedSuccess(world.isClientSide());
   }

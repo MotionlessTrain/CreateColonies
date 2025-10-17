@@ -18,7 +18,6 @@ import nl.motionlesstrain.createcolonies.blocks.SchematicTableBlock;
 import nl.motionlesstrain.createcolonies.gui.SchematicTableMenu;
 
 import static net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB;
-import static net.minecraft.core.registries.Registries.MENU;
 import static nl.motionlesstrain.createcolonies.CreateColonies.MODID;
 
 public class CreateColoniesResources {
@@ -59,7 +58,7 @@ public class CreateColoniesResources {
   }
 
   public static class Menus {
-    public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(MENU, MODID);
+    public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
 
     public static final RegistryObject<MenuType<SchematicTableMenu>> schematicTableMenu =
         REGISTRY.register("schematic_table_menu", () ->

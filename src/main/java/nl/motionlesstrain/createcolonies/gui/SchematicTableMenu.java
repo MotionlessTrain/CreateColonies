@@ -1,15 +1,18 @@
 package nl.motionlesstrain.createcolonies.gui;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
+import nl.motionlesstrain.createcolonies.blockentities.SchematicTableEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static nl.motionlesstrain.createcolonies.resources.CreateColoniesResources.Blocks.schematicTable;
 import static nl.motionlesstrain.createcolonies.resources.CreateColoniesResources.Menus.schematicTableMenu;
@@ -17,28 +20,30 @@ import static nl.motionlesstrain.createcolonies.resources.CreateColoniesResource
 public class SchematicTableMenu extends AbstractContainerMenu {
 
   private final ContainerLevelAccess access;
-
-  private final int ownSlots = 2;
-  private final int hotBarStart = ownSlots + 27;
-  private final int playerInvEnd = hotBarStart + 9;
+  private final DataSlot toggle;
+  private final IItemHandler itemHandler;
+  private final @Nullable BlockPos schematicTablePos;
 
   public SchematicTableMenu(int containerId, Inventory playerInv) {
-    this(containerId, playerInv, ContainerLevelAccess.NULL, new ItemStackHandler(2));
+    this(containerId, playerInv, ContainerLevelAccess.NULL, new ItemStackHandler(2), DataSlot.standalone(), null);
   }
 
-  public SchematicTableMenu(int containerId, Inventory playerInv, ContainerLevelAccess access, IItemHandler itemHandler) {
+  public SchematicTableMenu(int containerId, Inventory playerInv, ContainerLevelAccess access, IItemHandler itemHandler, DataSlot toggle, @Nullable BlockPos pos) {
     super(schematicTableMenu.get(), containerId);
     this.access = access;
+    this.toggle = toggle;
+    this.itemHandler = itemHandler;
+    this.schematicTablePos = pos;
 
-    final int ownInvMiddleX = 76;
+    final int ownInvMiddleX = 88;
     final int spaceBetweenSlots = 44;
-    final int ownInvMiddleY = 35;
+    final int ownInvMiddleY = 36;
 
-    addSlot(new SlotItemHandler(itemHandler, 0, ownInvMiddleX - (spaceBetweenSlots >> 1) - 18, ownInvMiddleY));
-    addSlot(new SlotItemHandler(itemHandler, 1, ownInvMiddleX + (spaceBetweenSlots >> 1), ownInvMiddleY));
+    addSlot(new SlotItemHandler(itemHandler, 0, ownInvMiddleX - (spaceBetweenSlots >> 1) - 17, ownInvMiddleY));
+    addSlot(new SlotItemHandler(itemHandler, 1, ownInvMiddleX + (spaceBetweenSlots >> 1) + 1, ownInvMiddleY));
 
-    final int playerInvXStart = 7;
-    final int playerInvYStart = 82;
+    final int playerInvXStart = 8;
+    final int playerInvYStart = 84;
     final int playerHotbarStart = 142;
     int slotId = 9;
 
@@ -51,6 +56,43 @@ public class SchematicTableMenu extends AbstractContainerMenu {
       // Hotbar is the first 9 slots in a player's inventory (0 - 9, just like x)
       addSlot(new Slot(playerInv, x, playerInvXStart + x * 18, playerHotbarStart));
     }
+    addDataSlot(toggle);
+  }
+
+  @Override
+  public boolean clickMenuButton(@NotNull Player player, int buttonId) {
+    System.out.println("clickMenuButton: " + player + " " + toggle.get());
+    switch (buttonId) {
+      case 0:
+        toggleButton();
+        break;
+      case 1:
+        if (schematicTablePos != null) {
+          startConverting(player, schematicTablePos);
+        }
+        break;
+      default:
+        return false;
+    }
+    return true;
+  }
+
+  private void startConverting(Player player, BlockPos schematicTablePos) {
+    final BlockEntity blockEntity = player.level().getBlockEntity(schematicTablePos);
+    if (blockEntity instanceof SchematicTableEntity schematicTableEntity) {
+      if (player instanceof ServerPlayer serverPlayer) {
+        schematicTableEntity.convert(serverPlayer);
+      }
+    }
+  }
+
+  private void toggleButton() {
+    final int newState = (toggle.get() + 1) & 1;
+    System.out.println("toggleButton(): Just before setting toggle: " + newState);
+    toggle.set(newState);
+  }
+  public boolean pointsToBlueprint() {
+    return toggle.get() == 0;
   }
 
   @Override
@@ -62,6 +104,11 @@ public class SchematicTableMenu extends AbstractContainerMenu {
     }
     final ItemStack rawStack = quickMovedSlot.getItem();
     final ItemStack quickMovedStack = rawStack.copy();
+
+    final int ownSlots = 2;
+    final int hotBarStart = ownSlots + 27;
+    final int playerInvEnd = hotBarStart + 9;
+
     if (slotIndex < ownSlots) {
       if (!moveItemStackTo(rawStack, ownSlots, playerInvEnd, true)) {
         return ItemStack.EMPTY;
@@ -88,5 +135,9 @@ public class SchematicTableMenu extends AbstractContainerMenu {
   @Override
   public boolean stillValid(@NotNull Player player) {
     return stillValid(this.access, player, schematicTable.get());
+  }
+
+  public IItemHandler getItemHandler() {
+    return itemHandler;
   }
 }
