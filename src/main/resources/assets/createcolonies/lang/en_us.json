@@ -8,5 +8,6 @@
   "nl.motionlesstrain.createcolonies.gui.noscantool.desc.1": "You can change the file name",
   "nl.motionlesstrain.createcolonies.gui.noscantool.desc.2": "by setting a name in the active slot",
   "nl.motionlesstrain.createcolonies.gui.noscantool.desc.3": "in the scan tool",
-  "nl.motionlesstrain.createcolonies.gui.convert": "Convert"
+  "nl.motionlesstrain.createcolonies.gui.convert": "Convert",
+  "nl.motionlesstrain.createcolonies.convert.confirm": "Schematic was successfully converted and saved!"
 }

@@ -32,6 +32,14 @@ public class BlockPosUtil {
         return tag;
     }
 
+    public static ListTag toNBTList(BlockPos pos) {
+      final ListTag list = new ListTag();
+      list.add(IntTag.valueOf(pos.getX()));
+      list.add(IntTag.valueOf(pos.getY()));
+      list.add(IntTag.valueOf(pos.getZ()));
+      return list;
+    }
+
     public record DoubleBlockPos(double x, double y, double z) {
         public DoubleBlockPos(ListTag list) {
             this(list.getDouble(0), list.getDouble(1), list.getDouble(2));

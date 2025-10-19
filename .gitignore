@@ -48,3 +48,5 @@ forge*changelog.txt
 
 # javascript (for changeset)
 node_modules/
+
+.DS_Store

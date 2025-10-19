@@ -24,6 +24,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import nl.motionlesstrain.createcolonies.gui.SchematicTableMenu;
 import nl.motionlesstrain.createcolonies.resources.CreateColoniesResources;
+import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.SchematicConversions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -115,7 +116,9 @@ public class SchematicTableEntity extends BlockEntity {
       } else {
         final String source = getFileName(1);
         final String target = getFileName(0);
-        SchematicConversions.structurizeToCreate(player, source, target);
+        final ItemStack fullSchematic = SchematicConversions.structurizeToCreate(player, source, target);
+
+        setCreateBlueprint(fullSchematic);
       }
     } catch(IOException e) {
       LOGGER.error("Could not convert {} to {}", toBlueprint ? "schematic" : "blueprint", toBlueprint ? "blueprint" : "schematic", e);
@@ -131,7 +134,6 @@ public class SchematicTableEntity extends BlockEntity {
     @Override
     public void set(int i) {
       toBlueprint = i == 0;
-      System.out.println("toBlueprint is now " + toBlueprint);
       setChanged();
     }
   }
@@ -301,7 +303,7 @@ public class SchematicTableEntity extends BlockEntity {
         return structurizeFileName == null ? null : structurizeFileName + ".nbt";
       }
       if (fullName) {
-        return blueprint == null ? null : blueprint.getFilePath().resolve(structurizeFileName + ".blueprint").toString();
+        return blueprint == null ? null : Path.of(blueprint.getPackName()).resolve(blueprint.getFilePath().toString()).resolve(structurizeFileName + ".blueprint").toString();
       }
       return structurizeFileName == null ? null : structurizeFileName + ".blueprint";
     }

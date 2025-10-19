@@ -7,9 +7,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 import org.slf4j.Logger;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -57,6 +60,10 @@ public class SaveNBTFileMessage extends ClientBoundNetworkMessage {
       final Path saveFile = gamePath.resolve(filePath);
       try {
         NbtIo.writeCompressed(fileContents, saveFile.toFile());
+        final @Nullable Player player = Minecraft.getInstance().player;
+        if (player != null) {
+          player.displayClientMessage(Component.translatable("nl.motionlesstrain.createcolonies.convert.confirm"), false);
+        }
       } catch (IOException e) {
         LOGGER.error("Could not save file {}", filePath, e);
       }

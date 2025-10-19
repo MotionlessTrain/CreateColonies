@@ -61,7 +61,6 @@ public class SchematicTableMenu extends AbstractContainerMenu {
 
   @Override
   public boolean clickMenuButton(@NotNull Player player, int buttonId) {
-    System.out.println("clickMenuButton: " + player + " " + toggle.get());
     switch (buttonId) {
       case 0:
         toggleButton();
@@ -88,7 +87,6 @@ public class SchematicTableMenu extends AbstractContainerMenu {
 
   private void toggleButton() {
     final int newState = (toggle.get() + 1) & 1;
-    System.out.println("toggleButton(): Just before setting toggle: " + newState);
     toggle.set(newState);
   }
   public boolean pointsToBlueprint() {
