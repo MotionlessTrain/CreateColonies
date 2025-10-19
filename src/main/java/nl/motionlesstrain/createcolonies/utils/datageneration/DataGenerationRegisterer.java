@@ -4,7 +4,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 public class DataGenerationRegisterer {
   public static void register(IEventBus bus) {
-    System.out.println("register ????");
     bus.register(Models.class);
     bus.register(Recipes.class);
   }
