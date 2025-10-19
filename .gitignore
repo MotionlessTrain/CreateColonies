@@ -42,9 +42,13 @@ build
 # other
 eclipse
 run
+run-data
+.cache
 
 # Files from Forge MDK
 forge*changelog.txt
 
 # javascript (for changeset)
 node_modules/
+
+.DS_Store

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "createcolonies:block/schematic_table"
+    }
+  }
+}

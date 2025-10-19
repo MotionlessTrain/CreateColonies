@@ -26,7 +26,6 @@ public class CommonConfig {
   public static void loadSettings(final ModConfigEvent event) {
     if (event.getConfig().getSpec() == SPEC) {
       debugLog = DEBUG_LOG.get();
-      System.out.println("debugLog = " + debugLog);
     }
   }
 }

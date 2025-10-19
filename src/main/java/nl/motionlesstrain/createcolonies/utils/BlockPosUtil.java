@@ -14,12 +14,30 @@ public class BlockPosUtil {
         return new BlockPos(x, y, z);
     }
 
+    public static BlockPos fromNBT(ListTag tag) {
+      if (tag.getElementType() != Tag.TAG_INT) {
+        return BlockPos.ZERO;
+      }
+      final int x = tag.getInt(0);
+      final int y = tag.getInt(1);
+      final int z = tag.getInt(2);
+      return new BlockPos(x, y, z);
+    }
+
     public static CompoundTag toNBT(BlockPos pos) {
         final CompoundTag tag = new CompoundTag();
         tag.putInt("X", pos.getX());
         tag.putInt("Y", pos.getY());
         tag.putInt("Z", pos.getZ());
         return tag;
+    }
+
+    public static ListTag toNBTList(BlockPos pos) {
+      final ListTag list = new ListTag();
+      list.add(IntTag.valueOf(pos.getX()));
+      list.add(IntTag.valueOf(pos.getY()));
+      list.add(IntTag.valueOf(pos.getZ()));
+      return list;
     }
 
     public record DoubleBlockPos(double x, double y, double z) {
