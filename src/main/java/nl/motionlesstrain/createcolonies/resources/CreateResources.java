@@ -95,5 +95,8 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:item", value = "create:schematic")
     public static Item schematic;
+
+    @ObjectHolder(registryName = "minecraft:item", value = "create:andesite_casing")
+    public static Item andesiteCasing;
   }
 }

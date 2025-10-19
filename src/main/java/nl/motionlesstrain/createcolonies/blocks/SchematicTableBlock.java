@@ -1,13 +1,11 @@
 package nl.motionlesstrain.createcolonies.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
@@ -17,17 +15,30 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import nl.motionlesstrain.createcolonies.blockentities.SchematicTableEntity;
-import nl.motionlesstrain.createcolonies.gui.SchematicTableMenu;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SchematicTableBlock extends Block implements EntityBlock {
+  public static final VoxelShape SHAPE = Shapes.or(
+    Shapes.box(0, 0.75, 0, 1, 1, 1),
+    Shapes.box(0, 0, 0, 0.125, 0.75, 0.125),
+    Shapes.box(0.875, 0, 0, 1, 0.75, 0.125),
+    Shapes.box(0, 0, 0.875, 0.125, 0.75, 1),
+    Shapes.box(0.875, 0, 0.875, 1, 0.75, 1)
+  );
+
   public SchematicTableBlock() {
-    super(Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD));
+    super(Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD).dynamicShape());
+  }
+
+  @Override
+  @SuppressWarnings("deprecation")
+  public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+    return SHAPE;
   }
 
   @Override

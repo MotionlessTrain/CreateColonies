@@ -1,6 +1,6 @@
 {
   "nl.motionlesstrain.createcolonies.clipboard.registered": "The required resources of %s are noted down on the clipboard",
-  "menu.title.createcolonies.schematic_table_menu": "Schematic Table",
+  "menu.title.createcolonies.schematic_table_menu": "Schematic Workbench",
   "nl.motionlesstrain.createcolonies.gui.nopreview.short": "No blueprint selected",
   "nl.motionlesstrain.createcolonies.gui.nopreview.desc": "Select a blueprint by opening a preview with the build tool, and place one here",
   "nl.motionlesstrain.createcolonies.gui.noschematic.short": "No schematic provided",
@@ -9,5 +9,7 @@
   "nl.motionlesstrain.createcolonies.gui.noscantool.desc.2": "by setting a name in the active slot",
   "nl.motionlesstrain.createcolonies.gui.noscantool.desc.3": "in the scan tool",
   "nl.motionlesstrain.createcolonies.gui.convert": "Convert",
-  "nl.motionlesstrain.createcolonies.convert.confirm": "Schematic was successfully converted and saved!"
+  "nl.motionlesstrain.createcolonies.convert.confirm": "Schematic was successfully converted and saved!",
+  "block.createcolonies.schematic_table": "Schematic Workbench",
+  "item_group.createcolonies.tab": "CreateColonies items and blocks"
 }

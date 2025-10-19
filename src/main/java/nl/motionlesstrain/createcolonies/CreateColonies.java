@@ -13,6 +13,7 @@ import nl.motionlesstrain.createcolonies.hooks.HooksInitialiser;
 import nl.motionlesstrain.createcolonies.network.MessagesHandler;
 import nl.motionlesstrain.createcolonies.placementhandlers.PlacementHandlers;
 import nl.motionlesstrain.createcolonies.resources.CreateColoniesResources;
+import nl.motionlesstrain.createcolonies.utils.datageneration.DataGenerationRegisterer;
 
 import static nl.motionlesstrain.createcolonies.resources.CreateColoniesResources.Menus.schematicTableMenu;
 
@@ -39,7 +40,11 @@ public class CreateColonies {
     CommonConfig.registerConfig();
     modEventBus.addListener(CommonConfig::loadSettings);
 
+    // Network message registration
     modEventBus.addListener(MessagesHandler::setUpNetwork);
+
+    // Data generators
+    DataGenerationRegisterer.register(modEventBus);
 
     // Register the event listeners, e.g. for items outside our control
     HooksInitialiser.registerHooks();

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "structurize:sceptergold"
+    },
+    "C": {
+      "item": "create:andesite_casing"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "PBP",
+    "PCP",
+    "PPP"
+  ],
+  "result": {
+    "item": "createcolonies:schematic_table"
+  },
+  "show_notification": true
+}
