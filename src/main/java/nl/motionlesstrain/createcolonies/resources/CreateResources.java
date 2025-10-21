@@ -57,6 +57,9 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:block", value = "create:brass_encased_large_cogwheel")
     public static Block brassEncasedLargeCogwheel;
+
+    @ObjectHolder(registryName = "minecraft:block", value = "create:chain_conveyor")
+    public static Block chainConveyor;
   }
 
   public static class Items {
@@ -98,5 +101,8 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:item", value = "create:andesite_casing")
     public static Item andesiteCasing;
+
+    @ObjectHolder(registryName = "minecraft:item", value = "create:chain_conveyor")
+    public static Item chainConveyor;
   }
 }

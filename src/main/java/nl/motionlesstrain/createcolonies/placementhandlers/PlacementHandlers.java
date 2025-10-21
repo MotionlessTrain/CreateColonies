@@ -21,6 +21,7 @@ public class PlacementHandlers {
     }
     public static void initialiseHandlers(FMLLoadCompleteEvent ignored) {
         addHandler(new BeltPlacementHandler());
+        addHandler(new ChainConveyorPlacementHandler());
         addHandler(new CopyCatPlacementHandler());
         addHandler(new DeployerPlacementHandler());
         addHandler(new EncasedShaftPlacementHandler());
