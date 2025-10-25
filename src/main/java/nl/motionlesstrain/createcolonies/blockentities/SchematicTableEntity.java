@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
@@ -17,6 +18,8 @@ import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capabilities;
 import net.neoforged.neoforge.common.capabilities.Capability;
 import net.neoforged.neoforge.common.util.LazyOptional;
@@ -87,12 +90,17 @@ public class SchematicTableEntity extends BlockEntity {
     toBlueprint = !tag.contains("toBlueprint", CompoundTag.TAG_BYTE) || tag.getBoolean("toBlueprint");
   }
 
+  private BlockCapabilityCache<IItemHandler, @Nullable Direction> itemHandlerCache;
   public @Nullable MenuProvider getMenuProvider() {
     if (level != null) {
+      if (itemHandlerCache == null && level instanceof ServerLevel serverLevel) {
+        itemHandlerCache = BlockCapabilityCache.create(Capabilities.ItemHandler.BLOCK, serverLevel, worldPosition, null);
+      }
+      final IItemHandler itemHandler = itemHandlerCache == null ? null : itemHandlerCache.getCapability();
       return new SimpleMenuProvider(
           (containerId, playerInventory, ignored) ->
               new SchematicTableMenu(containerId, playerInventory, ContainerLevelAccess.create(level, worldPosition),
-                  itemHandler.orElseThrow(() -> new IllegalStateException("The schematic table lost its inventory somehow")),
+                  itemHandler,
                   getToggle(), worldPosition
               ),
           Component.translatable("menu.title.createcolonies.schematic_table_menu")
@@ -142,7 +150,7 @@ public class SchematicTableEntity extends BlockEntity {
     return new ToggleSlot();
   }
 
-  private class ItemHandler implements IItemHandlerModifiable {
+  public class ItemHandler implements IItemHandlerModifiable {
 
     @Override
     public int getSlots() {
@@ -210,23 +218,6 @@ public class SchematicTableEntity extends BlockEntity {
         default -> false;
       };
     }
-  }
-
-
-  private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(ItemHandler::new);
-
-  @Override
-  public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-    if (cap == Capabilities.ITEM_HANDLER) {
-      return itemHandler.cast();
-    }
-    return super.getCapability(cap, side);
-  }
-
-  @Override
-  public void invalidateCaps() {
-    itemHandler.invalidate();
-    super.invalidateCaps();
   }
 
   public static String getFileName(@NotNull IItemHandler inventory, boolean toBlueprint, final int slot) {

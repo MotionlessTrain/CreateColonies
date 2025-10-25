@@ -52,6 +52,8 @@ public class CreateResources extends Resources {
 
     public static DeferredItem<Item> clipboard = createItem("clipboard");
 
+    public static DeferredItem<Item> fluidPipe = createItem("fluid_pipe");
+
     public static DeferredItem<Item> cogwheel = createItem("cogwheel");
     public static DeferredItem<Item> largeCogwheel = createItem("large_cogwheel");
 

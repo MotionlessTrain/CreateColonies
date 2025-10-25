@@ -7,6 +7,9 @@ import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import nl.motionlesstrain.createcolonies.blockentities.SchematicTableEntity;
 import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
 import nl.motionlesstrain.createcolonies.gui.SchematicTableScreen;
 import nl.motionlesstrain.createcolonies.hooks.HooksInitialiser;
@@ -26,6 +29,9 @@ public class CreateColonies {
   public CreateColonies(final IEventBus modEventBus) {
     // Register the DeferredRegisters that we use to register our own resources in
     registerRegistries(modEventBus);
+
+    // Register the capability providers that are used by the mod
+    modEventBus.addListener(this::registerCapabilities);
 
     // Register the other common event handlers
     modEventBus.addListener(CreateColoniesResources.CreativeTab::fillCreativeTab);
@@ -56,6 +62,13 @@ public class CreateColonies {
     CreateColoniesResources.CreativeTab.REGISTRY.register(bus);
     CreateColoniesResources.BlockEntities.REGISTRY.register(bus);
     CreateColoniesResources.Menus.REGISTRY.register(bus);
+  }
+
+  private void registerCapabilities(RegisterCapabilitiesEvent event) {
+    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+      CreateColoniesResources.BlockEntities.schematicTableEntity.get(),
+      (schematicTableEntity, side) -> schematicTableEntity.new ItemHandler()
+    );
   }
 
   static class ClientSide {
