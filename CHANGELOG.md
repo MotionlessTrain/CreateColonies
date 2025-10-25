@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.0-beta.3
+
+### Patch Changes
+
+- Chore: 1.20.3 changes (Capabilities) ([`fee2c72`](https://github.com/MotionlessTrain/CreateColonies/commit/fee2c72069abdca9a4090a90ad26eeaedba14706))
+
 ## 2.0.0-beta.2
 
 ### Patch Changes
