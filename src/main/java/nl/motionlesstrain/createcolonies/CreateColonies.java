@@ -4,12 +4,11 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.DistExecutor;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import nl.motionlesstrain.createcolonies.blockentities.SchematicTableEntity;
 import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
 import nl.motionlesstrain.createcolonies.gui.SchematicTableScreen;
 import nl.motionlesstrain.createcolonies.hooks.HooksInitialiser;
@@ -26,7 +25,11 @@ public class CreateColonies {
   // Define mod id in a common place for everything to reference
   public static final String MODID = "createcolonies";
 
-  public CreateColonies(final IEventBus modEventBus) {
+  // The mod container of CreateColonies
+  public static ModContainer container;
+
+  public CreateColonies(final IEventBus modEventBus, final ModContainer container) {
+    CreateColonies.container = container;
     // Register the DeferredRegisters that we use to register our own resources in
     registerRegistries(modEventBus);
 

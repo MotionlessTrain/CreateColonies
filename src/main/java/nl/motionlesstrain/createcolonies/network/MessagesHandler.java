@@ -1,39 +1,34 @@
 package nl.motionlesstrain.createcolonies.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.ModLoadingContext;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.network.NetworkRegistry;
-import net.neoforged.neoforge.network.simple.SimpleChannel;
-import net.neoforged.neoforgespi.language.IModInfo;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadHandler;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import nl.motionlesstrain.createcolonies.CreateColonies;
 import nl.motionlesstrain.createcolonies.network.messages.SaveNBTFileMessage;
-
-import java.util.function.Function;
 
 import static nl.motionlesstrain.createcolonies.CreateColonies.MODID;
 
 public class MessagesHandler {
-  private static int messageId = 0;
 
-  public static SimpleChannel NETWORK;
-
-  private static <M extends NetworkMessage> void registerMessage(
-      Class<M> messageClass, Function<FriendlyByteBuf, M> decode) {
-    NETWORK.registerMessage(messageId++, messageClass, NetworkMessage::encode, decode, NetworkMessage::handle);
+  @FunctionalInterface
+  interface MessageRegisterer<T extends CustomPacketPayload> {
+    void register(CustomPacketPayload.Type<T> type,
+                  StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec,
+                  IPayloadHandler<T> handler);
   }
 
-  public static void setUpNetwork(FMLCommonSetupEvent event) {
-    IModInfo info = ModLoadingContext.get().getActiveContainer().getModInfo();
-    final String version = info.getVersion().toString();
+  private static <M extends NetworkMessage> void registerMessage(MessageRegisterer<M> registrar, NetworkMessage.Factory<M> factory) {
+    registrar.register(factory.type(), factory.streamCodec(), factory.handler());
+  }
 
-    NETWORK = NetworkRegistry.newSimpleChannel(
-        new ResourceLocation(MODID, "main"),
-        () -> version,
-        version::equals,
-        version::equals
-    );
+  public static void setUpNetwork(final RegisterPayloadHandlersEvent event) {
+    final String version = CreateColonies.container.getModInfo().getVersion().toString();
 
-    registerMessage(SaveNBTFileMessage.class, SaveNBTFileMessage::new);
+    final PayloadRegistrar registrar = event.registrar(MODID)
+        .versioned(version);
+    registerMessage(registrar::playToClient, new SaveNBTFileMessage.Factory());
   }
 }
