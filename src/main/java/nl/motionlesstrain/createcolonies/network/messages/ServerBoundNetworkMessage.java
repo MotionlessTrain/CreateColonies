@@ -1,9 +1,8 @@
 package nl.motionlesstrain.createcolonies.network.messages;
 
-import net.minecraftforge.network.NetworkEvent;
 import nl.motionlesstrain.createcolonies.network.NetworkMessage;
-
 import java.util.function.Supplier;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public abstract class ServerBoundNetworkMessage implements NetworkMessage {
   abstract void handlePacket(NetworkEvent.Context ctx);

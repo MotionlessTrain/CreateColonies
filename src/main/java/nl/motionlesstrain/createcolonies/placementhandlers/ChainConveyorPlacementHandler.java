@@ -14,7 +14,6 @@ import nl.motionlesstrain.createcolonies.resources.CreateResources.Items;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

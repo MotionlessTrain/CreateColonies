@@ -15,7 +15,6 @@ import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.*;
 
 import static com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers.handleTileEntityPlacement;

@@ -15,11 +15,10 @@ import net.minecraft.util.datafix.DataFixers;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor;
 import nl.motionlesstrain.createcolonies.network.messages.SaveNBTFileMessage;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import org.slf4j.Logger;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;

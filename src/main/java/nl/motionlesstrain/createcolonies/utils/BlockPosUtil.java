@@ -4,8 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.*;
 import net.minecraft.world.level.block.Rotation;
 
-import java.util.ArrayList;
-
 public class BlockPosUtil {
     public static BlockPos fromNBT(CompoundTag tag) {
         final int x = tag.getInt("X");

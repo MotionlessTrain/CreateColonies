@@ -2,11 +2,11 @@ package nl.motionlesstrain.createcolonies.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.forgespi.language.IModInfo;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.network.NetworkRegistry;
+import net.neoforged.neoforge.network.simple.SimpleChannel;
+import net.neoforged.neoforgespi.language.IModInfo;
 import nl.motionlesstrain.createcolonies.network.messages.SaveNBTFileMessage;
 
 import java.util.function.Function;
