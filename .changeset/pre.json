@@ -5,6 +5,7 @@
     "CreateColonies": "1.0.0"
   },
   "changesets": [
-    "all-beers-smile"
+    "all-beers-smile",
+    "ripe-ads-relax"
   ]
 }
