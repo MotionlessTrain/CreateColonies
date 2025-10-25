@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.0-beta.1
+
+### Patch Changes
+
+- Set up (neo)gradle for 1.21.1 ([`8b5fb31`](https://github.com/MotionlessTrain/CreateColonies/commit/8b5fb3133e214199358711c35eceda539e7c534a))
+
 ## 2.0.0-beta.0
 
 ### Major Changes
