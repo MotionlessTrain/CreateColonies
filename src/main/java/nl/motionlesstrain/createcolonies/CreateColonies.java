@@ -23,9 +23,7 @@ public class CreateColonies {
   // Define mod id in a common place for everything to reference
   public static final String MODID = "createcolonies";
 
-  public CreateColonies() {
-    IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
+  public CreateColonies(final IEventBus modEventBus) {
     // Register the DeferredRegisters that we use to register our own resources in
     registerRegistries(modEventBus);
 

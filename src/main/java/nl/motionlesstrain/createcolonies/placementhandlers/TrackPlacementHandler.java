@@ -30,7 +30,7 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
   public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
 
     final List<ItemStack> neededItems = new ArrayList<>();
-    neededItems.add(ItemUtils.stackFromNullable(CreateResources.Items.track));
+    neededItems.add(ItemUtils.stackFromNullable(CreateResources.Blocks.track));
 
     if (blockState.is(CreateResources.Blocks.track) &&
         compoundTag != null && compoundTag.contains("Connections")) {
@@ -50,7 +50,7 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
             final int deltaX = Math.abs(positions[0].getX() - positions[1].getX());
             final int deltaZ = Math.abs(positions[0].getZ() - positions[1].getZ());
             final int trackAmount = (deltaX == 0 || deltaZ == 0) ? deltaX + deltaZ : deltaX * 3/2;
-            neededItems.add(ItemUtils.stackFromNullable(CreateResources.Items.track, trackAmount));
+            neededItems.add(ItemUtils.stackFromNullable(CreateResources.Blocks.track, trackAmount));
 
             if (connection.getByte("Girder") != 0) {
               neededItems.add(ItemUtils.stackFromNullable(CreateResources.Items.metalGirder, trackAmount * 2));

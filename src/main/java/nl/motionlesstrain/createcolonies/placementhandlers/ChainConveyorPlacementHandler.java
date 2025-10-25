@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import nl.motionlesstrain.createcolonies.resources.CreateResources.Items;
+import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
@@ -35,10 +35,10 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
         connectionPos.getX() == 0 ? connectionPos.getZ() > 0 : connectionPos.getX() > 0
       ).mapToDouble(pos -> Math.sqrt(pos.distSqr(BlockPos.ZERO))).mapToInt(distance -> (int)(distance / 2)).sum();
       if (neededChains > 0) {
-        return List.of(ItemUtils.stackFromNullable(Items.chainConveyor), new ItemStack(Blocks.CHAIN, neededChains));
+        return List.of(ItemUtils.stackFromNullable(CreateResources.Blocks.chainConveyor), new ItemStack(Blocks.CHAIN, neededChains));
       }
     }
-    return List.of(ItemUtils.stackFromNullable(Items.chainConveyor));
+    return List.of(ItemUtils.stackFromNullable(CreateResources.Blocks.chainConveyor));
   }
 
   private record ConveyorInfo(BlockPos pos, BlockPos newBlockPos, CompoundTag blockEntity)  {}

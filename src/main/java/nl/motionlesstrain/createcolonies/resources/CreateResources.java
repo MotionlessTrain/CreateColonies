@@ -2,107 +2,62 @@ package nl.motionlesstrain.createcolonies.resources;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.ObjectHolder;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredItem;
 
-public class CreateResources {
+public class CreateResources extends Resources {
+  private static DeferredBlock<Block> createBlock(String path) {
+    return createBlock("create", path);
+  }
+
+  private static DeferredItem<Item> createItem(String path) {
+    return createItem("create", path);
+  }
 
   public static class Blocks {
-    @ObjectHolder(registryName = "minecraft:block", value = "create:small_bogey")
-    public static Block smallBogey = null;
+    public static DeferredBlock<Block> smallBogey = createBlock("small_bogey");
+    public static DeferredBlock<Block> largeBogey = createBlock("large_bogey");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:large_bogey")
-    public static Block largeBogey = null;
+    public static DeferredBlock<Block> track = createBlock("track");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:track")
-    public static Block track = null;
+    public static DeferredBlock<Block> belt = createBlock("belt");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:belt")
-    public static Block belt = null;
+    public static DeferredBlock<Block> andesiteEncasedShaft = createBlock("andesite_encased_shaft");
+    public static DeferredBlock<Block> brassEncasedShaft = createBlock("brass_encased_shaft");
+    public static DeferredBlock<Block> encasedFluidPipe = createBlock("encased_fluid_pipe");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:andesite_encased_shaft")
-    public static Block andesiteEncasedShaft;
+    public static DeferredBlock<Block> copycatStep = createBlock("copycat_step");
+    public static DeferredBlock<Block> copycatPanel = createBlock("copycat_panel");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:brass_encased_shaft")
-    public static Block brassEncasedShaft;
+    public static DeferredBlock<Block> trackStation = createBlock("track_station");
+    public static DeferredBlock<Block> trackSignal = createBlock("track_signal");
+    public static DeferredBlock<Block> trackObserver = createBlock("track_observer");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:encased_fluid_pipe")
-    public static Block encasedFluidPipe;
+    public static DeferredBlock<Block> deployer = createBlock("deployer");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:copycat_step")
-    public static Block copycatStep;
+    public static DeferredBlock<Block> andesiteEncasedCogwheel = createBlock("andesite_encased_cogwheel");
+    public static DeferredBlock<Block> brassEncasedCogwheel = createBlock("brass_encased_cogwheel");
+    public static DeferredBlock<Block> andesiteEncasedLargeCogwheel = createBlock("andesite_encased_large_cogwheel");
+    public static DeferredBlock<Block> brassEncasedLargeCogwheel = createBlock("brass_encased_large_cogwheel");
 
-    @ObjectHolder(registryName = "minecraft:block", value = "create:copycat_panel")
-    public static Block copycatPanel;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:track_station")
-    public static Block trackStation;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:track_signal")
-    public static Block trackSignal;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:track_observer")
-    public static Block trackObserver;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:deployer")
-    public static Block deployer;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:andesite_encased_cogwheel")
-    public static Block andesiteEncasedCogwheel;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:brass_encased_cogwheel")
-    public static Block brassEncasedCogwheel;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:andesite_encased_large_cogwheel")
-    public static Block andesiteEncasedLargeCogwheel;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:brass_encased_large_cogwheel")
-    public static Block brassEncasedLargeCogwheel;
-
-    @ObjectHolder(registryName = "minecraft:block", value = "create:chain_conveyor")
-    public static Block chainConveyor;
+    public static DeferredBlock<Block> chainConveyor = createBlock("chain_conveyor");
   }
 
   public static class Items {
-    @ObjectHolder(registryName = "minecraft:item", value = "create:railway_casing")
-    public static Item trainCasing = null;
+    public static DeferredItem<Item> trainCasing = createItem("railway_casing");
 
-    @ObjectHolder(registryName = "minecraft:item", value = "create:track")
-    public static Item track;
+    public static DeferredItem<Item> shaft = createItem("shaft");
 
-    @ObjectHolder(registryName = "minecraft:item", value = "create:belt_connector")
-    public static Item belt = null;
+    public static DeferredItem<Item> metalGirder = createItem("metal_girder");
 
-    @ObjectHolder(registryName = "minecraft:item", value = "create:shaft")
-    public static Item shaft;
+    public static DeferredItem<Item> clipboard = createItem("clipboard");
 
-    @ObjectHolder(registryName = "minecraft:item", value = "create:fluid_pipe")
-    public static Item fluidPipe;
+    public static DeferredItem<Item> cogwheel = createItem("cogwheel");
+    public static DeferredItem<Item> largeCogwheel = createItem("large_cogwheel");
 
-    @ObjectHolder(registryName = "minecraft:item", value = "create:metal_girder")
-    public static Item metalGirder;
+    public static DeferredItem<Item> emptySchematic = createItem("empty_schematic");
+    public static DeferredItem<Item> schematic = createItem("schematic");
 
-    @ObjectHolder(registryName = "minecraft:item", value = "create:deployer")
-    public static Item deployer;
-
-    @ObjectHolder(registryName = "minecraft:item", value = "create:clipboard")
-    public static Item clipboard;
-
-    @ObjectHolder(registryName = "minecraft:item", value = "create:cogwheel")
-    public static Item cogwheel;
-
-    @ObjectHolder(registryName = "minecraft:item", value = "create:large_cogwheel")
-    public static Item largeCogwheel;
-
-    @ObjectHolder(registryName = "minecraft:item", value = "create:empty_schematic")
-    public static Item emptySchematic;
-
-    @ObjectHolder(registryName = "minecraft:item", value = "create:schematic")
-    public static Item schematic;
-
-    @ObjectHolder(registryName = "minecraft:item", value = "create:andesite_casing")
-    public static Item andesiteCasing;
-
-    @ObjectHolder(registryName = "minecraft:item", value = "create:chain_conveyor")
-    public static Item chainConveyor;
+    public static DeferredItem<Item> andesiteCasing = createItem("andesite_casing");
   }
 }

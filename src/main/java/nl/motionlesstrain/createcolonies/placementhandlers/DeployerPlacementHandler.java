@@ -22,7 +22,7 @@ public class DeployerPlacementHandler extends SimplePlacementHandler {
   @Override
   public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
     final List<ItemStack> neededItems = new ArrayList<>();
-    neededItems.add(ItemUtils.stackFromNullable(Items.deployer));
+    neededItems.add(ItemUtils.stackFromNullable(Blocks.deployer));
     if (compoundTag != null && compoundTag.contains("Inventory", Tag.TAG_LIST)) {
       final var inventory = compoundTag.getList("Inventory", Tag.TAG_COMPOUND);
       for (int i = 0; i < inventory.size(); i++) {

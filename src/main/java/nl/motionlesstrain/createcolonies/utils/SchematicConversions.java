@@ -28,6 +28,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import static nl.motionlesstrain.createcolonies.network.MessagesHandler.NETWORK;
+import static nl.motionlesstrain.createcolonies.utils.ItemUtils.stackFromNullable;
 
 public class SchematicConversions {
   private static final DataFixer dataFixer = DataFixers.getDataFixer();
@@ -187,7 +188,7 @@ public class SchematicConversions {
     final var pack = StructurePacks.getStructurePack(packId);
     if (pack == null) {
       LOGGER.error("Unable to find pack with name {}", packId);
-      return new ItemStack(CreateResources.Items.emptySchematic);
+      return stackFromNullable(CreateResources.Items.emptySchematic);
     }
     final Path resolved = pack.getPath().resolve(pack.getSubPath(subPath));
 
@@ -291,7 +292,7 @@ public class SchematicConversions {
     NETWORK.send(PacketDistributor.PLAYER.with(() -> player), new SaveNBTFileMessage(clientPath.toString(), schematic));
 
     final String targetName = targetPath.getFileName().toString();
-    final ItemStack fullSchematic = new ItemStack(CreateResources.Items.schematic, 1);
+    final ItemStack fullSchematic = CreateResources.Items.schematic.toStack();
     final CompoundTag schematicData = fullSchematic.getOrCreateTag();
     schematicData.put("Anchor", BlockPosUtil.toNBT(BlockPos.ZERO));
     schematicData.put("Bounds", BlockPosUtil.toNBTList(size));

@@ -36,7 +36,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
                 requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Items.shaft));
             }
             if (blockState.getValue(BeltBlock.PART) == BeltPart.START) {
-                requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Items.belt));
+                requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Blocks.belt));
                 // The start one seems to have an inventory
                 if (compoundTag != null && compoundTag.contains("Inventory", Tag.TAG_COMPOUND)) {
                     final var inventoryCompound = compoundTag.getCompound("Inventory");
