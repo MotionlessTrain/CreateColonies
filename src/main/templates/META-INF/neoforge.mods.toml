@@ -11,7 +11,7 @@ loaderVersion="${loader_version_range}" #mandatory This is typically bumped ever
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
 license="${mod_license}"
 # A URL to refer people to when problems occur with this mod
-#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+issueTrackerURL="https://www.github.com/MotionlessTrain/CreateColonies/issues" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
     # The modid of the mod
@@ -67,19 +67,19 @@ license="${mod_license}"
 [[dependencies.${mod_id}]]
     modId="create"
     mandatory=true
-    versionRange="${project.create_version_range}"
+    versionRange="${create_version_range}"
     ordering="NONE"
     side="BOTH"
 [[dependencies.${mod_id}]]
     modId="structurize"
     mandatory=true
-    versionRange="[${project.structurize_version}, )"
+    versionRange="[${structurize_version}, )"
     ordering="AFTER"
     side="BOTH"
 [[dependencies.${mod_id}]]
     modId="minecolonies"
     mandatory=false
-    versionRange="[${project.minecolonies_version}, )"
+    versionRange="[${minecolonies_version}, )"
     ordering="NONE"
     side="BOTH"
 
