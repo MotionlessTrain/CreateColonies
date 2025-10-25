@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.0-beta.0
+
+### Major Changes
+
+- Start work on 1.21.1
+
 ## 1.0.0
 
 ### Major Changes

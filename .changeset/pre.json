@@ -1,0 +1,10 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "CreateColonies": "1.0.0"
+  },
+  "changesets": [
+    "all-beers-smile"
+  ]
+}
