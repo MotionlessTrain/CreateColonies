@@ -23,6 +23,7 @@ jobs:
       minecraft_major: ${{ steps.retrieveMinecraftVersion.outputs.minecraft_major }}
       java_version: ${{ steps.retrieveMinecraftVersion.outputs.java_version }}
       mod_version: ${{ steps.retrieveModVersion.outputs.mod_version }}
+      release_type: ${{ steps.retrieveModVersion.outputs.release_type }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,6 +40,8 @@ jobs:
           gitRef="${{ github.ref }}"
           tagName=$(echo "${gitRef/refs\/tags\//}")
           echo "mod_version=${tagName/v/}" >> "$GITHUB_OUTPUT"
+          inFix=${${tagName#*-}%%.*}
+          echo "release_type=$(test beta = $inFix && echo beta || ( test alpha = $inFix && echo alpha ) || release)" >> "$GITHUB_OUTPUT"
   build:
     needs: ["get-versions"]
     runs-on: ubuntu-latest
@@ -82,3 +85,4 @@ jobs:
           token: "${{ secrets.CURSE_TOKEN }}"
           changelog: ${{ github.event.release.body }}
           display_name: CreateColonies-${{ needs.get-versions.outputs.minecraft_version }}-${{ needs.get-versions.outputs.mod_version }}.jar
+          release_type: ${{ needs.get-versions.outputs.release_type }}
