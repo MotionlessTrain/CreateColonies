@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.0-beta.4
+
+### Patch Changes
+
+- chore: 1.20.4 changes (Network rework) ([`3fcf28e`](https://github.com/MotionlessTrain/CreateColonies/commit/3fcf28eee5693a738996d1f7eaa1acadbe167f00))
+
 ## 2.0.0-beta.3
 
 ### Patch Changes
