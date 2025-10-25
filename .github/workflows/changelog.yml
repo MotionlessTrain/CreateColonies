@@ -3,7 +3,7 @@ name: Changelogs
 on:
   push:
     branches:
-      - main
+      - 1.21
 
 permissions: write-all
 
