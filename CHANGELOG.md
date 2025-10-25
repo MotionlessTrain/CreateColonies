@@ -1,5 +1,13 @@
 # CreateColonies
 
+## 2.0.0-beta.2
+
+### Patch Changes
+
+- Chore: Rename imports and classes to Neoforge names ([#16](https://github.com/MotionlessTrain/CreateColonies/pull/16))
+
+- Chore: 1.20.2 changes ([`7d38534`](https://github.com/MotionlessTrain/CreateColonies/commit/7d38534b5e049c69edcd006e02ffd0aaa5134584))
+
 ## 2.0.0-beta.1
 
 ### Patch Changes
