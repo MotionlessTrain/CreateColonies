@@ -1,7 +1,7 @@
 package nl.motionlesstrain.createcolonies.resources;
 
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ObjectHolder;
+import net.neoforged.neoforge.registries.ObjectHolder;
 
 public class StructurizeResources {
   public static class Items {

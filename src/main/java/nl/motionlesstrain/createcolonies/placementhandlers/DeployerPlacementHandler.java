@@ -6,14 +6,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import nl.motionlesstrain.createcolonies.resources.CreateResources.Blocks;
+import nl.motionlesstrain.createcolonies.resources.CreateResources.Items;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static nl.motionlesstrain.createcolonies.resources.CreateResources.Blocks;
-import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items;
 
 public class DeployerPlacementHandler extends SimplePlacementHandler {
   @Override

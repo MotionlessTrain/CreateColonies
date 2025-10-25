@@ -1,6 +1,6 @@
 package nl.motionlesstrain.createcolonies.utils.datageneration;
 
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 
 public class DataGenerationRegisterer {
   public static void register(IEventBus bus) {

@@ -1,7 +1,7 @@
 package nl.motionlesstrain.createcolonies.resources;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ObjectHolder;
+import net.neoforged.neoforge.registries.ObjectHolder;
 
 public class MinecoloniesResources {
   public static class Blocks {

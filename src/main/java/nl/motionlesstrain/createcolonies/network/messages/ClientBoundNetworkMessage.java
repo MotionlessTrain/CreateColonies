@@ -1,11 +1,8 @@
 package nl.motionlesstrain.createcolonies.network.messages;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
 import nl.motionlesstrain.createcolonies.network.NetworkMessage;
-
 import java.util.function.Supplier;
+import net.neoforged.neoforge.network.NetworkEvent;
 
 public abstract class ClientBoundNetworkMessage implements NetworkMessage {
   protected abstract ClientsideHandler createHandler();

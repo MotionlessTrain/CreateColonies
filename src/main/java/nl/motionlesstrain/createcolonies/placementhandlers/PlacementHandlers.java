@@ -8,7 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import nl.motionlesstrain.createcolonies.CommonConfig;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;

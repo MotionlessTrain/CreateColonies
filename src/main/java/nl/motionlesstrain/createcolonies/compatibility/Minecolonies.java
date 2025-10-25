@@ -1,8 +1,7 @@
 package nl.motionlesstrain.createcolonies.compatibility;
 
-import net.minecraftforge.fml.ModList;
-
 import java.util.function.Supplier;
+import net.neoforged.fml.ModList;
 
 public class Minecolonies {
   private static class MinecoloniesNotInstalled implements CompatRunner {

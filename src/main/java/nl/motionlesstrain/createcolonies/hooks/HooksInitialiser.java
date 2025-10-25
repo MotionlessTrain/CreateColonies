@@ -1,9 +1,9 @@
 package nl.motionlesstrain.createcolonies.hooks;
 
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 
 public class HooksInitialiser {
   public static void registerHooks() {
-    MinecraftForge.EVENT_BUS.register(InteractionHook.class);
+    NeoForge.EVENT_BUS.register(InteractionHook.class);
   }
 }

@@ -8,16 +8,14 @@ import com.ldtteam.structurize.util.RotationMirror;
 import com.simibubi.create.content.trains.track.TrackBlock;
 import com.simibubi.create.content.trains.track.TrackShape;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import org.jetbrains.annotations.Nullable;
-
-import static net.minecraft.core.Direction.Axis;
 
 public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlockPlacementHandler {
     @Override
