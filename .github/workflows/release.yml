@@ -30,10 +30,11 @@ jobs:
       - id: retrieveMinecraftVersion
         name: "Retrieve Minecraft Version"
         run: |
-          minecraftVersion=$(grep 'minecraft_version=' gradle.properties | cut -d "=" -f 2)
+          minecraftVersion=$(grep '^minecraft_version=' gradle.properties | cut -d "=" -f 2)
           echo "minecraft_version=${minecraftVersion}" >> "$GITHUB_OUTPUT"
-          echo "minecraft_major=$(echo $minecraftVersion | sed -E 's/([0-9]+)\.([0-9]+)(\.[0-9]+)?/\1.\2/')" >> "$GITHUB_OUTPUT"
-          echo "java_version=$(test ${minecraft_major#*.} = 20 && echo 17 || echo 21)" >> "$GITHUB_OUTPUT"
+          minecraftMajor=$(echo $minecraftVersion | sed -E 's/([0-9]+)\.([0-9]+)(\.[0-9]+)?/\1.\2/')
+          echo "minecraft_major=$minecraftMajor" >> "$GITHUB_OUTPUT"
+          echo "java_version=$(test ${minecraftMajor#*.} = 20 && echo 17 || echo 21)" >> "$GITHUB_OUTPUT"
       - id: retrieveModVersion
         name: "Retrieve CreateColonies Version"
         run: |
