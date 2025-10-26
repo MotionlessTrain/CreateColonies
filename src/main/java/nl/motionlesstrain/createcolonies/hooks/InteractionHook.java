@@ -18,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -50,7 +49,6 @@ public class InteractionHook {
     if (blockHutBuilder.isBound() && blockStateClicked.is(blockHutBuilder) && clipboard.isBound() && heldItem.is(clipboard)) {
       evt.setCanceled(true);
       evt.setCancellationResult(InteractionResult.SUCCESS);
-      evt.setResult(Event.Result.DENY);
       if (evt.getSide().isClient()) return;
 
       if (player instanceof FakePlayer) return;
