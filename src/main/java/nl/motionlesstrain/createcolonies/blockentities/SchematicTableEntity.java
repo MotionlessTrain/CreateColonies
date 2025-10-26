@@ -7,6 +7,7 @@ import com.ldtteam.structurize.util.ScanToolData;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -32,7 +33,6 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Optional;
 
 import static nl.motionlesstrain.createcolonies.resources.CreateResources.DataComponentTypes.schematicFile;
 import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.emptySchematic;
@@ -70,21 +70,19 @@ public class SchematicTableEntity extends BlockEntity {
   }
 
   @Override
-  protected void saveAdditional(@NotNull CompoundTag tag) {
-    super.saveAdditional(tag);
+  protected void saveAdditional(@NotNull final CompoundTag tag, @NotNull final HolderLookup.Provider registryAccess) {
+    super.saveAdditional(tag, registryAccess);
 
-    tag.put("createBlueprint", createBlueprint.save(new CompoundTag()));
-    tag.put("structurizeTool", structurizeTool.save(new CompoundTag()));
+    tag.put("createBlueprint", createBlueprint.save(registryAccess));
+    tag.put("structurizeTool", structurizeTool.save(registryAccess));
     tag.putBoolean("toBlueprint", toBlueprint);
   }
 
   @Override
-  public void load(@NotNull CompoundTag tag) {
-    super.load(tag);
-    createBlueprint = Optional.ofNullable(tag.get("createBlueprint")).map(itemTag ->
-        (CompoundTag)itemTag).map(ItemStack::of).orElse(ItemStack.EMPTY);
-    structurizeTool = Optional.ofNullable(tag.get("structurizeTool")).map(itemTag ->
-        (CompoundTag)itemTag).map(ItemStack::of).orElse(ItemStack.EMPTY);
+  public void loadAdditional(@NotNull final CompoundTag tag, final HolderLookup.@NotNull Provider registryAccess) {
+    super.loadAdditional(tag, registryAccess);
+    createBlueprint = ItemStack.parseOptional(registryAccess, tag.getCompound("createBlueprint"));
+    structurizeTool = ItemStack.parseOptional(registryAccess, tag.getCompound("structurizeTool"));
     toBlueprint = !tag.contains("toBlueprint", CompoundTag.TAG_BYTE) || tag.getBoolean("toBlueprint");
   }
 
@@ -92,7 +90,7 @@ public class SchematicTableEntity extends BlockEntity {
   public @Nullable MenuProvider getMenuProvider() {
     if (level != null) {
       if (itemHandlerCache == null && level instanceof ServerLevel serverLevel) {
-        itemHandlerCache = BlockCapabilityCache.create(Capabilities.ItemHandler.BLOCK, serverLevel, worldPosition, null);
+        itemHandlerCache = BlockCapabilityCache.create(Capabilities.ItemHandler.BLOCK, serverLevel, worldPosition, Direction.UP);
       }
       final IItemHandler itemHandler = itemHandlerCache == null ? null : itemHandlerCache.getCapability();
       return new SimpleMenuProvider(
