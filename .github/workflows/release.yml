@@ -41,7 +41,7 @@ jobs:
           gitRef="${{ github.ref }}"
           tagName=$(echo "${gitRef/refs\/tags\//}")
           echo "mod_version=${tagName/v/}" >> "$GITHUB_OUTPUT"
-          inFix=${${tagName#*-}%%.*}
+          inFix=$(echo $tagName | sed 's/.*-\(.*\)\..*/\1/')
           echo "release_type=$(test beta = $inFix && echo beta || ( test alpha = $inFix && echo alpha ) || release)" >> "$GITHUB_OUTPUT"
   build:
     needs: ["get-versions"]
