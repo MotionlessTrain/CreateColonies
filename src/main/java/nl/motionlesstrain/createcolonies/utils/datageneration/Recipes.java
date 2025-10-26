@@ -1,6 +1,7 @@
 package nl.motionlesstrain.createcolonies.utils.datageneration;
 
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -12,6 +13,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import static nl.motionlesstrain.createcolonies.resources.CreateColoniesResources.Blocks.schematicTable;
@@ -25,8 +27,8 @@ public class Recipes extends RecipeProvider {
     generator.addProvider(event.includeServer(), (Factory<Recipes>)Recipes::new);
   }
 
-  public Recipes(PackOutput output) {
-    super(output);
+  public Recipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registryAccess) {
+    super(output, registryAccess);
   }
 
   @Override

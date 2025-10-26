@@ -34,7 +34,6 @@ public record SaveNBTFileMessage(String filePath, CompoundTag fileContents) impl
   public @NotNull Type<? extends CustomPacketPayload> type() {
     return TYPE;
   }
-
   public static final StreamCodec<ByteBuf, SaveNBTFileMessage> STREAM_CODEC = StreamCodec.composite(
     ByteBufCodecs.STRING_UTF8,
     SaveNBTFileMessage::filePath,

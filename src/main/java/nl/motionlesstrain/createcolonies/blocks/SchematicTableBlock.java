@@ -1,7 +1,6 @@
 package nl.motionlesstrain.createcolonies.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
@@ -36,14 +35,12 @@ public class SchematicTableBlock extends Block implements EntityBlock {
   }
 
   @Override
-  @SuppressWarnings("deprecation")
-  public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+  protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull CollisionContext context) {
     return SHAPE;
   }
 
   @Override
-  @SuppressWarnings("deprecation")
-  public @Nullable MenuProvider getMenuProvider(@NotNull BlockState any, @NotNull Level world, @NotNull BlockPos pos) {
+  protected @Nullable MenuProvider getMenuProvider(@NotNull BlockState any, @NotNull Level world, @NotNull BlockPos pos) {
     final BlockEntity blockEntity = world.getBlockEntity(pos);
     if (blockEntity instanceof SchematicTableEntity stEntity) {
       return stEntity.getMenuProvider();
@@ -52,9 +49,8 @@ public class SchematicTableBlock extends Block implements EntityBlock {
   }
 
   @Override
-  @SuppressWarnings("deprecation")
-  public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos,
-                                        @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hitResult) {
+  protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos,
+                                        @NotNull Player player, @NotNull BlockHitResult hitResult) {
     if (!world.isClientSide()) {
       final BlockEntity blockEntity = world.getBlockEntity(pos);
       if (blockEntity instanceof SchematicTableEntity stEntity) {
