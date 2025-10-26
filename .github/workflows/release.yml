@@ -22,6 +22,7 @@ jobs:
       minecraft_version: ${{ steps.retrieveMinecraftVersion.outputs.minecraft_version }}
       minecraft_major: ${{ steps.retrieveMinecraftVersion.outputs.minecraft_major }}
       java_version: ${{ steps.retrieveMinecraftVersion.outputs.java_version }}
+      loader_name: ${{ steps.retrieveMinecraftVersion.outputs.loader_name }}
       mod_version: ${{ steps.retrieveModVersion.outputs.mod_version }}
       release_type: ${{ steps.retrieveModVersion.outputs.release_type }}
     steps:
@@ -35,6 +36,7 @@ jobs:
           minecraftMajor=$(echo $minecraftVersion | sed -E 's/([0-9]+)\.([0-9]+)(\.[0-9]+)?/\1.\2/')
           echo "minecraft_major=$minecraftMajor" >> "$GITHUB_OUTPUT"
           echo "java_version=$(test ${minecraftMajor#*.} = 20 && echo 17 || echo 21)" >> "$GITHUB_OUTPUT"
+          echo "loader_name=$(test ${minecraftMajor#*.} = 20 && echo Forge || echo NeoForge)" >> "$GITHUB_OUTPUT"
       - id: retrieveModVersion
         name: "Retrieve CreateColonies Version"
         run: |
@@ -49,10 +51,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: "${{ needs.get-versions.outputs.java_version }}"
           distribution: 'temurin'
 
       # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
@@ -81,7 +83,7 @@ jobs:
         with:
           file_path: ./build/libs/createcolonies-${{ needs.get-versions.outputs.mod_version }}.jar
           game_endpoint: minecraft
-          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }},Java ${{ needs.get-versions.outputs.java_version }},Forge"
+          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }}:${{ needs.get-versions.outputs.minecraft_version }},Java ${{ needs.get-versions.outputs.java_version }},${{ needs.get-versions.outputs.loader_name }}"
           project_id: "1332665"
           token: "${{ secrets.CURSE_TOKEN }}"
           changelog: ${{ github.event.release.body }}
