@@ -1,5 +1,13 @@
 # CreateColonies
 
+## 2.0.0-beta.8
+
+### Patch Changes
+
+- fix: Small porting issues, mostly due to different BlockPos storage between 1.20.1 and 1.21.1 ([`b4d1858`](https://github.com/MotionlessTrain/CreateColonies/commit/b4d1858e9363864330fd56c9aa54b76c36dc720b))
+
+- chore: datapack renames ([`43f7732`](https://github.com/MotionlessTrain/CreateColonies/commit/43f77324904b615c7704b40863ecc87968ec5aa1))
+
 ## 2.0.0-beta.7
 
 ### Patch Changes
