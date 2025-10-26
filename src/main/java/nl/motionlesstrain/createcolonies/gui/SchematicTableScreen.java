@@ -21,7 +21,7 @@ import static nl.motionlesstrain.createcolonies.CreateColonies.MODID;
 
 public class SchematicTableScreen extends AbstractContainerScreen<SchematicTableMenu> {
 
-  private static final ResourceLocation BACKGROUND_LOCATION = new ResourceLocation(MODID,
+  private static final ResourceLocation BACKGROUND_LOCATION = ResourceLocation.fromNamespaceAndPath(MODID,
       "textures/gui/container/schematic_table_screen.png");
 
   public SchematicTableScreen(SchematicTableMenu menu, Inventory playerInv, Component title) {
@@ -72,7 +72,7 @@ public class SchematicTableScreen extends AbstractContainerScreen<SchematicTable
 
   @Override
   public void render(@NotNull GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-    this.renderBackground(graphics);
+    this.renderBackground(graphics, mouseX, mouseY, partialTick);
 
     final boolean pointsRight = menu.pointsToBlueprint();
     if (this.pointsRight != pointsRight) {

@@ -1,7 +1,7 @@
 package nl.motionlesstrain.createcolonies.placementhandlers;
 
+import com.ldtteam.structurize.api.RotationMirror;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
-import com.ldtteam.structurize.util.PlacementSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -45,7 +45,7 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
   private Map<BlockPos, Map<BlockPos, ConveyorInfo>> connections = new HashMap<>();
 
   @Override
-  public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, PlacementSettings settings) {
+  public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
     if (tileEntityData != null) {
       final ListTag connections = tileEntityData.getList("Connections", Tag.TAG_COMPOUND);
       final ListTag newConnections = new ListTag();
@@ -61,7 +61,7 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
           final ConveyorInfo info = existingConnections.remove(newBlockPos);
           final ListTag infoConnections = info.blockEntity().getList("Connections", Tag.TAG_COMPOUND);
           infoConnections.add(BlockPosUtil.toNBT(info.newBlockPos()));
-          handleTileEntityPlacement(info.blockEntity(), world, info.pos());
+          handleTileEntityPlacement(info.blockEntity(), world, info.pos(), settings);
 
           newConnections.add(BlockPosUtil.toNBT(newBlockPos));
         } else {

@@ -1,8 +1,8 @@
 package nl.motionlesstrain.createcolonies.placementhandlers;
 
-import com.ldtteam.structurize.api.util.constant.Constants;
+import com.ldtteam.structurize.api.RotationMirror;
+import com.ldtteam.structurize.api.constants.Constants;
 import com.ldtteam.structurize.placement.handlers.placement.IPlacementHandler;
-import com.ldtteam.structurize.util.PlacementSettings;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import net.minecraft.core.BlockPos;
@@ -81,7 +81,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
 
     private final Map<BlockPos, SortedMap<BlockPos, BeltInfo>> beltParts = new HashMap<>();
     @Override
-    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, @SuppressWarnings("removal") PlacementSettings settings) {
+    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
         if (tileEntityData == null) return ActionProcessingResult.DENY;
 
         final var controller = tileEntityData.getCompound("Controller");

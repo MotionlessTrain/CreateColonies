@@ -1,8 +1,7 @@
 package nl.motionlesstrain.createcolonies.placementhandlers;
 
+import com.ldtteam.structurize.api.RotationMirror;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
-import com.ldtteam.structurize.util.PlacementSettings;
-import com.ldtteam.structurize.util.RotationMirror;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -75,7 +74,7 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
   };
 
   @Override
-  public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, PlacementSettings settings) {
+  public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
     final RotationMirror blueprintRotation = blueprint.getRotationMirror();
 
     if (tileEntityData != null && tileEntityData.contains("Connections", Tag.TAG_LIST)) {

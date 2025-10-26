@@ -4,8 +4,8 @@ import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.tags.ItemTags;
@@ -14,7 +14,6 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 import static nl.motionlesstrain.createcolonies.resources.CreateColoniesResources.Blocks.schematicTable;
 import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.*;
@@ -24,7 +23,8 @@ public class Recipes extends RecipeProvider {
   @SubscribeEvent
   public static void gatherRecipes(GatherDataEvent event) {
     final DataGenerator generator = event.getGenerator();
-    generator.addProvider(event.includeServer(), (Factory<Recipes>)Recipes::new);
+    final CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+    generator.addProvider(event.includeServer(), (Factory<Recipes>)output -> new Recipes(output, lookupProvider));
   }
 
   public Recipes(PackOutput output, CompletableFuture<HolderLookup.Provider> registryAccess) {
@@ -32,7 +32,7 @@ public class Recipes extends RecipeProvider {
   }
 
   @Override
-  protected void buildRecipes(@NotNull Consumer<FinishedRecipe> consumer) {
+  protected void buildRecipes(@NotNull RecipeOutput output) {
     ShapedRecipeBuilder.shaped(RecipeCategory.MISC, schematicTable.get())
       .pattern("PBP")
       .pattern("PCP")
@@ -42,6 +42,6 @@ public class Recipes extends RecipeProvider {
       .define('C', andesiteCasing)
       .unlockedBy("has_items",
         InventoryChangeTrigger.TriggerInstance.hasItems(emptySchematic)
-      ).save(consumer);
+      ).save(output);
   }
 }

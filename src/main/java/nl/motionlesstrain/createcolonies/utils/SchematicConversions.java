@@ -41,7 +41,7 @@ public class SchematicConversions {
     final Path sourcePath = Path.of(String.format(source, playerName));
     final Path targetPath = Path.of(String.format(destination, playerName.toLowerCase(Locale.US)));
 
-    final CompoundTag oldSchematic = NbtIo.readCompressed(sourcePath.toFile());
+    final CompoundTag oldSchematic = NbtIo.readCompressed(sourcePath, NbtAccounter.unlimitedHeap());
 
     final int version = oldSchematic.getInt("DataVersion");
     final int currentVersion = SharedConstants.getCurrentVersion().getDataVersion().getVersion();
@@ -194,7 +194,7 @@ public class SchematicConversions {
     }
     final Path resolved = pack.getPath().resolve(pack.getSubPath(subPath));
 
-    final CompoundTag blueprint = NbtIo.readCompressed(Files.newInputStream(resolved));
+    final CompoundTag blueprint = NbtIo.readCompressed(Files.newInputStream(resolved), NbtAccounter.unlimitedHeap());
 
     final int dataVersion = blueprint.getInt("mcversion");
     final int currentVersion = SharedConstants.getCurrentVersion().getDataVersion().getVersion();
@@ -286,7 +286,7 @@ public class SchematicConversions {
     final Path clientPath = Path.of("schematics").resolve(targetPath.subpath(3, targetPath.getNameCount()));
 
     try {
-      NbtIo.writeCompressed(schematic, targetPath.toFile());
+      NbtIo.writeCompressed(schematic, targetPath);
     } catch(IOException e) {
       LOGGER.error("Saving of schematic file failed", e);
     }

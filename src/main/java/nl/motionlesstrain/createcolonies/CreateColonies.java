@@ -1,14 +1,12 @@
 package nl.motionlesstrain.createcolonies;
 
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
 import nl.motionlesstrain.createcolonies.gui.SchematicTableScreen;
 import nl.motionlesstrain.createcolonies.hooks.HooksInitialiser;
@@ -40,11 +38,8 @@ public class CreateColonies {
     modEventBus.addListener(CreateColoniesResources.CreativeTab::fillCreativeTab);
     modEventBus.addListener(PlacementHandlers::initialiseHandlers);
 
-    // Physical client only registries
-    DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> modEventBus.addListener(ClientSide::clientSetup));
-
     // Register our config
-    CommonConfig.registerConfig();
+    CommonConfig.registerConfig(container);
     modEventBus.addListener(CommonConfig::loadSettings);
 
     // Network message registration
@@ -74,10 +69,14 @@ public class CreateColonies {
     );
   }
 
-  static class ClientSide {
-    private static void clientSetup(FMLClientSetupEvent event) {
-      event.enqueueWork(() ->
-          MenuScreens.register(schematicTableMenu.get(), SchematicTableScreen::new));
+  @Mod(value=MODID, dist=Dist.CLIENT)
+  public static class ClientSide {
+    public ClientSide(final IEventBus modEventBus) {
+      modEventBus.addListener(this::registerScreen);
+    }
+
+    private void registerScreen(RegisterMenuScreensEvent event) {
+      event.register(schematicTableMenu.get(), SchematicTableScreen::new);
     }
   }
 }

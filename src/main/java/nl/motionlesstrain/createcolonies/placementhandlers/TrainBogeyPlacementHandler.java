@@ -1,8 +1,5 @@
 package nl.motionlesstrain.createcolonies.placementhandlers;
 
-import com.ldtteam.structurize.api.util.constant.Constants;
-import com.ldtteam.structurize.placement.handlers.placement.IPlacementHandler;
-import com.ldtteam.structurize.util.PlacementSettings;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

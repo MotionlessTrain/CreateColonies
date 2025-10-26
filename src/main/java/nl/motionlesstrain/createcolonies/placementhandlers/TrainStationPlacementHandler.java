@@ -1,10 +1,9 @@
 package nl.motionlesstrain.createcolonies.placementhandlers;
 
 
+import com.ldtteam.structurize.api.RotationMirror;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
 import com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers;
-import com.ldtteam.structurize.util.PlacementSettings;
-import com.ldtteam.structurize.util.RotationMirror;
 import com.simibubi.create.content.trains.track.TrackBlock;
 import com.simibubi.create.content.trains.track.TrackShape;
 import net.minecraft.core.BlockPos;
@@ -35,7 +34,7 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
     }
 
     @Override
-    public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, PlacementSettings settings) {
+    public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
         if (tileEntityData != null && tileEntityData.contains("TargetTrack")) {
             final RotationMirror blueprintRotation = blueprint.getRotationMirror();
             final var newData = fixTargetTrack(tileEntityData.getCompound("TargetTrack"), blueprintRotation);

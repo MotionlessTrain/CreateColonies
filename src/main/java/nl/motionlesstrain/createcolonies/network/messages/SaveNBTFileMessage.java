@@ -50,7 +50,7 @@ public record SaveNBTFileMessage(String filePath, CompoundTag fileContents) impl
       final Path gamePath = Minecraft.getInstance().gameDirectory.toPath();
       final Path saveFile = gamePath.resolve(message.filePath);
       try {
-        NbtIo.writeCompressed(message.fileContents, saveFile.toFile());
+        NbtIo.writeCompressed(message.fileContents, saveFile);
         final @Nullable Player player = Minecraft.getInstance().player;
         if (player != null) {
           player.displayClientMessage(Component.translatable("nl.motionlesstrain.createcolonies.convert.confirm"), false);

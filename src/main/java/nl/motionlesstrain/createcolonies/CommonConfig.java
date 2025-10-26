@@ -1,5 +1,6 @@
 package nl.motionlesstrain.createcolonies;
 
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -20,8 +21,8 @@ public class CommonConfig {
     SPEC = builder.build();
   }
 
-  public static void registerConfig() {
-    ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC);
+  public static void registerConfig(ModContainer container) {
+    container.registerConfig(ModConfig.Type.COMMON, SPEC);
   }
   public static void loadSettings(final ModConfigEvent event) {
     if (event.getConfig().getSpec() == SPEC) {
