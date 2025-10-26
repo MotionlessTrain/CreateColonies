@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import nl.motionlesstrain.createcolonies.CommonConfig;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -42,9 +43,11 @@ public class PlacementHandlers {
 
         @Override
         public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
+          if (level instanceof ServerLevel serverLevel) {
             LOGGER.debug("Trying to handle block state {} at position {}, needing items {} if not overridden", blockState, blockPos,
-              BlockToItemHelper.getItemStack((ServerLevel) level, blockPos));
-            return false;
+              BlockToItemHelper.getItemStack(blockState, null, FakePlayerFactory.getMinecraft(serverLevel)));
+          }
+          return false;
         }
 
         @Override

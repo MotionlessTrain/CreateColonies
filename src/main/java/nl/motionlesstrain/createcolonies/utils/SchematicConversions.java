@@ -30,7 +30,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import static nl.motionlesstrain.createcolonies.resources.CreateResources.DataComponentTypes.*;
-import static nl.motionlesstrain.createcolonies.utils.ItemUtils.stackFromNullable;
+import static nl.motionlesstrain.createcolonies.utils.ItemUtils.stackFromDeferred;
 
 public class SchematicConversions {
   private static final DataFixer dataFixer = DataFixers.getDataFixer();
@@ -48,7 +48,7 @@ public class SchematicConversions {
 
     final CompoundTag schematic = fixStructure(version, currentVersion, oldSchematic);
 
-    final BlockPos size = BlockPosUtil.fromNBT(schematic.getList("size", Tag.TAG_INT));
+    final BlockPos size = BlockPosUtil.fromNBT(schematic, "size");
     short[][][] blocks = new short[size.getY()][size.getZ()][size.getX()];
     CompoundTag[][][] nbt = new CompoundTag[size.getY()][size.getZ()][size.getX()];
 
@@ -56,7 +56,7 @@ public class SchematicConversions {
 
     for (int i = 0; i < blocksInSchematic.size(); i++) {
       final CompoundTag block = blocksInSchematic.getCompound(i);
-      final BlockPos pos = BlockPosUtil.fromNBT(block.getList("pos", Tag.TAG_INT));
+      final BlockPos pos = BlockPosUtil.fromNBT(block, "pos");
       // Create / minecraft omit air from the block list. Structurize includes it as state 0.
       // Hence, we need to shift the states by one, such that the blocks with state 0 don't become air out of the sudden
       final short state = (short) (block.getInt("state") + 1);
@@ -190,7 +190,7 @@ public class SchematicConversions {
     final var pack = StructurePacks.getStructurePack(packId);
     if (pack == null) {
       LOGGER.error("Unable to find pack with name {}", packId);
-      return stackFromNullable(CreateResources.Items.emptySchematic);
+      return ItemUtils.stackFromDeferred(CreateResources.Items.emptySchematic);
     }
     final Path resolved = pack.getPath().resolve(pack.getSubPath(subPath));
 

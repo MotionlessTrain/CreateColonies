@@ -5,6 +5,7 @@ import com.ldtteam.structurize.blueprints.v1.Blueprint;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -14,6 +15,7 @@ import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,40 +32,37 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
   @Override
   public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
     if (compoundTag != null) {
-      final ListTag connections = compoundTag.getList("Connections", Tag.TAG_COMPOUND);
-      final int neededChains = connections.stream().map(CompoundTag.class::cast).map(BlockPosUtil::fromNBT).filter(connectionPos ->
+      final int neededChains = BlockPosUtil.getList(compoundTag, "Connections").stream().filter(connectionPos ->
         connectionPos.getX() == 0 ? connectionPos.getZ() > 0 : connectionPos.getX() > 0
       ).mapToDouble(pos -> Math.sqrt(pos.distSqr(BlockPos.ZERO))).mapToInt(distance -> (int)(distance / 2)).sum();
       if (neededChains > 0) {
-        return List.of(ItemUtils.stackFromNullable(CreateResources.Blocks.chainConveyor), new ItemStack(Blocks.CHAIN, neededChains));
+        return List.of(ItemUtils.stackFromDeferred(CreateResources.Blocks.chainConveyor), new ItemStack(Blocks.CHAIN, neededChains));
       }
     }
-    return List.of(ItemUtils.stackFromNullable(CreateResources.Blocks.chainConveyor));
+    return List.of(ItemUtils.stackFromDeferred(CreateResources.Blocks.chainConveyor));
   }
 
   private record ConveyorInfo(BlockPos pos, BlockPos newBlockPos, CompoundTag blockEntity)  {}
-  private Map<BlockPos, Map<BlockPos, ConveyorInfo>> connections = new HashMap<>();
+  private final Map<BlockPos, Map<BlockPos, ConveyorInfo>> connections = new HashMap<>();
 
   @Override
   public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
     if (tileEntityData != null) {
-      final ListTag connections = tileEntityData.getList("Connections", Tag.TAG_COMPOUND);
+      final List<BlockPos> connections = BlockPosUtil.getList(tileEntityData, "Connections");
       final ListTag newConnections = new ListTag();
 
       final Map<BlockPos, ConveyorInfo> existingConnections = this.connections.getOrDefault(pos, Map.of());
 
-      for (int i = 0; i < connections.size(); i++) {
-        final CompoundTag connection = connections.getCompound(i);
-        final BlockPos blockPos = BlockPosUtil.fromNBT(connection);
+      for (final BlockPos blockPos : connections) {
         final BlockPos newBlockPos = blockPos.rotate(blueprint.getRotationMirror().rotation());
 
         if (existingConnections.containsKey(newBlockPos)) {
           final ConveyorInfo info = existingConnections.remove(newBlockPos);
-          final ListTag infoConnections = info.blockEntity().getList("Connections", Tag.TAG_COMPOUND);
-          infoConnections.add(BlockPosUtil.toNBT(info.newBlockPos()));
+          final ListTag infoConnections = info.blockEntity().getList("Connections", Tag.TAG_INT_ARRAY);
+          BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, info.newBlockPos()).ifSuccess(infoConnections::add);
           handleTileEntityPlacement(info.blockEntity(), world, info.pos(), settings);
 
-          newConnections.add(BlockPosUtil.toNBT(newBlockPos));
+          BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, newBlockPos).ifSuccess(newConnections::add);
         } else {
           final Map<BlockPos, ConveyorInfo> newConnections2 = this.connections.computeIfAbsent(pos.offset(newBlockPos), ignored -> new HashMap<>());
           newConnections2.put(newBlockPos.multiply(-1), new ConveyorInfo(pos, newBlockPos, tileEntityData));

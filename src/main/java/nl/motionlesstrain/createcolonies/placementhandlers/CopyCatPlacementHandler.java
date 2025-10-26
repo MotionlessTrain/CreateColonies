@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
 import org.jetbrains.annotations.Nullable;
@@ -28,9 +29,15 @@ public class CopyCatPlacementHandler extends SimplePlacementHandler {
     @Override
     public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
         final List<ItemStack> itemList = new ArrayList<>();
-        itemList.add(BlockToItemHelper.getItemStack((ServerLevel) level, blockPos));
+
+        if (blockState.is(CreateResources.Blocks.copycatPanel)) {
+          itemList.add(CreateResources.Blocks.copycatPanel.toStack(1));
+        } else {
+          itemList.add(CreateResources.Blocks.copycatStep.toStack(1));
+        }
+
         if (compoundTag != null && compoundTag.contains("Item", Tag.TAG_COMPOUND)) {
-            itemList.add(ItemUtils.stackFromNBT(level, compoundTag.getCompound("Item")));
+          itemList.add(ItemUtils.stackFromNBT(level, compoundTag.getCompound("Item")));
         }
         return itemList;
     }

@@ -29,7 +29,7 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
   public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
 
     final List<ItemStack> neededItems = new ArrayList<>();
-    neededItems.add(ItemUtils.stackFromNullable(CreateResources.Blocks.track));
+    neededItems.add(ItemUtils.stackFromDeferred(CreateResources.Blocks.track));
 
     if (blockState.is(CreateResources.Blocks.track) &&
         compoundTag != null && compoundTag.contains("Connections")) {
@@ -38,21 +38,15 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
         final var connection = connections.getCompound(i);
         if (connection.getByte("Primary") != 0 &&
             connection.contains("Positions", Tag.TAG_LIST)) {
-          final ListTag positionInfo = connection.getList("Positions", Tag.TAG_COMPOUND);
-          BlockPos[] positions = new BlockPos[positionInfo.size()];
-          for (int j = 0; j < positionInfo.size(); j++) {
-            final var positionObj = positionInfo.getCompound(j);
-            BlockPos position = BlockPosUtil.fromNBT(positionObj);
-            positions[j] = position;
-          }
+          BlockPos[] positions = BlockPosUtil.getList(connection, "Positions").toArray(BlockPos[]::new);
           if (positions.length == 2) {
             final int deltaX = Math.abs(positions[0].getX() - positions[1].getX());
             final int deltaZ = Math.abs(positions[0].getZ() - positions[1].getZ());
             final int trackAmount = (deltaX == 0 || deltaZ == 0) ? deltaX + deltaZ : deltaX * 3/2;
-            neededItems.add(ItemUtils.stackFromNullable(CreateResources.Blocks.track, trackAmount));
+            neededItems.add(ItemUtils.stackFromDeferred(CreateResources.Blocks.track, trackAmount));
 
             if (connection.getByte("Girder") != 0) {
-              neededItems.add(ItemUtils.stackFromNullable(CreateResources.Items.metalGirder, trackAmount * 2));
+              neededItems.add(ItemUtils.stackFromDeferred(CreateResources.Items.metalGirder, trackAmount * 2));
             }
           }
         }
@@ -103,20 +97,23 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
           }
         }
         if (connection.contains("Positions", Tag.TAG_LIST)) {
-          final ListTag positionInfo = connection.getList("Positions", Tag.TAG_COMPOUND);
-          for (int j = 0; j < positionInfo.size(); j++) {
-            final var positionObj = positionInfo.getCompound(j);
-            BlockPos position = BlockPosUtil.fromNBT(positionObj);
-            if (blueprintRotation.isMirrored())
+          final ListTag positionInfo = BlockPosUtil.getList(connection, "Positions").stream().map(position -> {
+            System.out.println("position: " + position);
+            if (blueprintRotation.isMirrored()) {
               position = new BlockPos(-position.getX(), position.getY(), position.getZ());
+            }
             final BlockPos rotated = position.rotate(blueprintRotation.rotation());
-            final var newPositionObj = BlockPosUtil.toNBT(rotated);
-            positionInfo.set(j, newPositionObj);
-          }
+            final CompoundTag posTag = new CompoundTag();
+            posTag.put("Pos", BlockPosUtil.toNBT(rotated));
+            return posTag;
+          }).collect(ListTag::new, ListTag::add, ListTag::addAll);
+          System.out.println("positionInfo: " + positionInfo);
+          connection.put("Positions", positionInfo);
         }
       }
     }
 
+    System.out.println("tileEntityData after converting: " + tileEntityData);
     return super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
   }
 }

@@ -73,8 +73,8 @@ public class SchematicTableEntity extends BlockEntity {
   protected void saveAdditional(@NotNull final CompoundTag tag, @NotNull final HolderLookup.Provider registryAccess) {
     super.saveAdditional(tag, registryAccess);
 
-    tag.put("createBlueprint", createBlueprint.save(registryAccess));
-    tag.put("structurizeTool", structurizeTool.save(registryAccess));
+    tag.put("createBlueprint", createBlueprint.saveOptional(registryAccess));
+    tag.put("structurizeTool", structurizeTool.saveOptional(registryAccess));
     tag.putBoolean("toBlueprint", toBlueprint);
   }
 

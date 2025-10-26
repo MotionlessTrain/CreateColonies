@@ -33,10 +33,10 @@ public class BeltPlacementHandler implements IPlacementHandler {
 
         if (blockState.hasProperty(BeltBlock.PART)) {
             if (blockState.getValue(BeltBlock.PART) != BeltPart.MIDDLE) {
-                requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Items.shaft));
+                requiredItems.add(ItemUtils.stackFromDeferred(CreateResources.Items.shaft));
             }
             if (blockState.getValue(BeltBlock.PART) == BeltPart.START) {
-                requiredItems.add(ItemUtils.stackFromNullable(CreateResources.Blocks.belt));
+                requiredItems.add(ItemUtils.stackFromDeferred(CreateResources.Blocks.belt));
                 // The start one seems to have an inventory
                 if (compoundTag != null && compoundTag.contains("Inventory", Tag.TAG_COMPOUND)) {
                     final var inventoryCompound = compoundTag.getCompound("Inventory");
@@ -52,9 +52,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
         }
 
         if (compoundTag != null) {
-
-            final var controller = compoundTag.getCompound("Controller");
-            final var controllerPos = BlockPosUtil.fromNBT(controller);
+            final var controllerPos = BlockPosUtil.fromNBT(compoundTag, "Controller");
 
             final var allBeltItems = beltItems.computeIfAbsent(controllerPos, ignored -> new HashMap<>());
 
@@ -84,8 +82,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
     public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
         if (tileEntityData == null) return ActionProcessingResult.DENY;
 
-        final var controller = tileEntityData.getCompound("Controller");
-        final var controllerPos = BlockPosUtil.fromNBT(controller);
+        final var controllerPos = BlockPosUtil.fromNBT(tileEntityData, "Controller");
 
         final var length = tileEntityData.getInt("Length");
 
