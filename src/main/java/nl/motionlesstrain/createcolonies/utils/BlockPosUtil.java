@@ -24,7 +24,11 @@ public class BlockPosUtil {
     final List<BlockPos> decoded = new ArrayList<>();
     for (Tag posTag : list) {
       if (posTag instanceof CompoundTag compoundTag) {
-        decoded.add(BlockPosUtil.fromNBT(compoundTag));
+        if (compoundTag.contains("Pos")) {
+          decoded.add(BlockPosUtil.fromNBT(compoundTag, "Pos"));
+        } else {
+          decoded.add(BlockPosUtil.fromNBT(compoundTag));
+        }
       } else {
         decoded.add(BlockPosUtil.fromNBT(posTag));
       }

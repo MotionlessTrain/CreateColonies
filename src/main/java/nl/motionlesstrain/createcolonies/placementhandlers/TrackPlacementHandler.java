@@ -98,7 +98,6 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
         }
         if (connection.contains("Positions", Tag.TAG_LIST)) {
           final ListTag positionInfo = BlockPosUtil.getList(connection, "Positions").stream().map(position -> {
-            System.out.println("position: " + position);
             if (blueprintRotation.isMirrored()) {
               position = new BlockPos(-position.getX(), position.getY(), position.getZ());
             }
@@ -107,13 +106,11 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
             posTag.put("Pos", BlockPosUtil.toNBT(rotated));
             return posTag;
           }).collect(ListTag::new, ListTag::add, ListTag::addAll);
-          System.out.println("positionInfo: " + positionInfo);
           connection.put("Positions", positionInfo);
         }
       }
     }
 
-    System.out.println("tileEntityData after converting: " + tileEntityData);
     return super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
   }
 }
