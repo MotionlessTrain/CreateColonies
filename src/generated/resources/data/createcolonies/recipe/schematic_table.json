@@ -18,7 +18,7 @@
     "PPP"
   ],
   "result": {
-    "item": "createcolonies:schematic_table"
-  },
-  "show_notification": true
+    "count": 1,
+    "id": "createcolonies:schematic_table"
+  }
 }

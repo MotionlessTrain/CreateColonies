@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "create:empty_schematic"
-            ]
+            "items": "create:empty_schematic"
           }
         ]
       },
@@ -22,14 +20,13 @@
   },
   "requirements": [
     [
-      "has_items",
-      "has_the_recipe"
+      "has_the_recipe",
+      "has_items"
     ]
   ],
   "rewards": {
     "recipes": [
       "createcolonies:schematic_table"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }
