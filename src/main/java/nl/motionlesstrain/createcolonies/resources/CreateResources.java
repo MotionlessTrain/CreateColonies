@@ -1,9 +1,21 @@
 package nl.motionlesstrain.createcolonies.resources;
 
+import com.simibubi.create.content.equipment.clipboard.ClipboardEntry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
+
+import java.util.List;
 
 public class CreateResources extends Resources {
   private static DeferredBlock<Block> createBlock(String path) {
@@ -61,5 +73,23 @@ public class CreateResources extends Resources {
     public static DeferredItem<Item> schematic = createItem("schematic");
 
     public static DeferredItem<Item> andesiteCasing = createItem("andesite_casing");
+  }
+
+  private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> createDataComponentType(String path) {
+    return DeferredHolder.create(Registries.DATA_COMPONENT_TYPE,
+      ResourceLocation.fromNamespaceAndPath("create", path)
+    );
+  }
+  public static class DataComponentTypes {
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<BlockPos>> schematicAnchor = createDataComponentType("schematic_anchor");
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<Vec3i>> schematicBounds = createDataComponentType("schematic_bounds");
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> schematicDeployed = createDataComponentType("schematic_deployed");
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<String>> schematicFile = createDataComponentType("schematic_file");
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<Mirror>> schematicMirror = createDataComponentType("schematic_mirror");
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<String>> schematicOwner = createDataComponentType("schematic_owner");
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<Rotation>> schematicRotation = createDataComponentType("schematic_rotation");
+
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<List<List<ClipboardEntry>>>> clipboardPages = createDataComponentType("clipboard_pages");
+    public static DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> clipboardReadOnly = createDataComponentType("clipboard_read_only");
   }
 }

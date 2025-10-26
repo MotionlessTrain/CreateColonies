@@ -1,10 +1,12 @@
 package nl.motionlesstrain.createcolonies.placementhandlers;
 
+import com.ldtteam.common.util.BlockToItemHelper;
 import com.ldtteam.structurize.placement.handlers.placement.IPlacementHandler;
 import com.ldtteam.structurize.util.BlockUtils;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,7 +43,7 @@ public class PlacementHandlers {
         @Override
         public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
             LOGGER.debug("Trying to handle block state {} at position {}, needing items {} if not overridden", blockState, blockPos,
-                    BlockUtils.getItemStackFromBlockState(blockState));
+              BlockToItemHelper.getItemStack((ServerLevel) level, blockPos));
             return false;
         }
 

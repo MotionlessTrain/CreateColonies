@@ -3,16 +3,16 @@ package nl.motionlesstrain.createcolonies;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
-import net.neoforged.neoforge.common.NeoForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class CommonConfig {
-  private static final NeoForgeConfigSpec SPEC;
+  private static final ModConfigSpec SPEC;
 
-  private static final NeoForgeConfigSpec.BooleanValue DEBUG_LOG;
+  private static final ModConfigSpec.BooleanValue DEBUG_LOG;
   public static boolean debugLog;
 
   static {
-    final NeoForgeConfigSpec.Builder builder = new NeoForgeConfigSpec.Builder();
+    final ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
     DEBUG_LOG = builder.comment(
         "Enable the debug log for items needed during the build (only recommended for development)"
     ).define("debugLog", false);

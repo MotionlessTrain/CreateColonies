@@ -6,12 +6,12 @@ import com.simibubi.create.content.equipment.clipboard.ClipboardEntry;
 import com.simibubi.create.content.equipment.clipboard.ClipboardOverrides;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.Unit;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +23,14 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import static com.minecolonies.core.colony.buildings.modules.BuildingModules.BUILDING_RESOURCES;
+import static nl.motionlesstrain.createcolonies.resources.CreateResources.DataComponentTypes.clipboardPages;
+import static nl.motionlesstrain.createcolonies.resources.CreateResources.DataComponentTypes.clipboardReadOnly;
 import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.clipboard;
 import static nl.motionlesstrain.createcolonies.resources.MinecoloniesResources.Blocks.blockHutBuilder;
 
@@ -70,10 +75,8 @@ public class InteractionHook {
               }
             });
             // Inspired by MaterialChecklist, which is part of the schematicannon code to write resources into a clipboard
-            final CompoundTag tag = heldItem.getOrCreateTag();
-            final ListTag pagesNBT = new ListTag();
-            tag.put("Pages", pagesNBT);
-            ListTag entriesNBT = new ListTag();
+            final List<List<ClipboardEntry>> pages = new ArrayList<>();
+            List<ClipboardEntry> entries = new ArrayList<>();
             int i = 0;
             for (final var neededItem : neededResources.values()) {
               final MutableComponent text = Component.translatable(neededItem.item.getDescriptionId()).setStyle(
@@ -83,28 +86,24 @@ public class InteractionHook {
               ).append(
                   Component.literal(" | " + neededItem.count / 64 + "▤ +" + neededItem.count % 64).withStyle(ChatFormatting.GRAY)
               );
-              entriesNBT.add(
-                  new ClipboardEntry(neededItem.count == 0, text).displayItem(neededItem.item, neededItem.count).writeNBT());
+              entries.add(
+                  new ClipboardEntry(neededItem.count == 0, text).displayItem(neededItem.item, neededItem.count));
 
               if (++i == 7) {
-                entriesNBT.add(
-                    new ClipboardEntry(false, Component.literal(">>>").withStyle(ChatFormatting.DARK_GRAY)).writeNBT());
-                final CompoundTag pageNBT = new CompoundTag();
-                pageNBT.put("Entries", entriesNBT);
-                pagesNBT.add(pageNBT);
-                entriesNBT = new ListTag();
+                entries.add(
+                    new ClipboardEntry(false, Component.literal(">>>").withStyle(ChatFormatting.DARK_GRAY)));
+                pages.add(entries);
+                entries = new ArrayList<>();
                 i = 0;
               }
             }
             if (i > 0) {
-              final CompoundTag pageNBT = new CompoundTag();
-              pageNBT.put("Entries", entriesNBT);
-              pagesNBT.add(pageNBT);
+              pages.add(entries);
             }
             ClipboardOverrides.switchTo(ClipboardOverrides.ClipboardType.WRITTEN, heldItem);
-            heldItem.getOrCreateTagElement("display").putString("Name", Component.Serializer.toJson(Component.translatable("create.materialChecklist").setStyle(Style.EMPTY.withItalic(Boolean.FALSE))));
-            tag.putBoolean("Readonly", true);
-            heldItem.setTag(tag);
+            heldItem.set(clipboardPages, pages);
+            heldItem.set(DataComponents.CUSTOM_NAME, Component.translatable("create.materialChecklist").setStyle(Style.EMPTY.withItalic(Boolean.FALSE)));
+            heldItem.set(clipboardReadOnly, Unit.INSTANCE);
 
             final Component message = Component.translatable("nl.motionlesstrain.createcolonies.clipboard.registered",
                 Component.translatable(building.getBuildingDisplayName())).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY));

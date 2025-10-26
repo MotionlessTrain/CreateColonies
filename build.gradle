@@ -174,7 +174,9 @@ dependencies {
     implementation ("com.ldtteam:minecolonies:${minecolonies_version}") {
         transitive = false
     }
-    localRuntime ("com.ldtteam:blockui:${blockui_version}")
+    implementation ("com.ldtteam:blockui:${blockui_version}") {
+        transitive = false
+    }
     implementation ("com.ldtteam:domum-ornamentum:${domum_ornamentum_version}") {
         transitive = false
     }

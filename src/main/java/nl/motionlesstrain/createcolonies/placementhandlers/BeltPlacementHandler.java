@@ -44,7 +44,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
                     for (final var itemEntity : itemEntities) {
                         if (itemEntity instanceof CompoundTag itemEntityTag) {
                             var itemTag = itemEntityTag.getCompound("Item");
-                            requiredItems.add(ItemStack.of(itemTag));
+                            requiredItems.add(ItemUtils.stackFromNBT(level, itemTag));
                         }
                     }
                 }

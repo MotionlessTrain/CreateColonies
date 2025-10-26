@@ -27,7 +27,7 @@ public class DeployerPlacementHandler extends SimplePlacementHandler {
       final var inventory = compoundTag.getList("Inventory", Tag.TAG_COMPOUND);
       for (int i = 0; i < inventory.size(); i++) {
         final CompoundTag item = inventory.getCompound(i);
-        neededItems.add(ItemStack.of(item));
+        neededItems.add(ItemUtils.stackFromNBT(level, item));
       }
     }
     return neededItems;

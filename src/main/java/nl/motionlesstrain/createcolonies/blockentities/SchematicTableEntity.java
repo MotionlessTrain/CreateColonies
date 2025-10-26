@@ -3,6 +3,7 @@ package nl.motionlesstrain.createcolonies.blockentities;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
 import com.ldtteam.structurize.storage.rendering.RenderingCache;
 import com.ldtteam.structurize.storage.rendering.types.BlueprintPreviewData;
+import com.ldtteam.structurize.util.ScanToolData;
 import com.mojang.logging.LogUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,14 +21,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capabilities;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import nl.motionlesstrain.createcolonies.gui.SchematicTableMenu;
 import nl.motionlesstrain.createcolonies.resources.CreateColoniesResources;
-import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.SchematicConversions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,6 +34,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 
+import static nl.motionlesstrain.createcolonies.resources.CreateResources.DataComponentTypes.schematicFile;
 import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.emptySchematic;
 import static nl.motionlesstrain.createcolonies.resources.CreateResources.Items.schematic;
 import static nl.motionlesstrain.createcolonies.resources.StructurizeResources.Items.buildTool;
@@ -252,23 +250,17 @@ public class SchematicTableEntity extends BlockEntity {
         return "";
       }
       if (slot == 1 && structurizeItem.is(scanTool)) {
-        final CompoundTag tag = structurizeItem.getTag();
-        if (tag != null && tag.contains("structurize:name", CompoundTag.TAG_STRING)) {
-          final String name = tag.getString("structurize:name");
-          if (!name.isEmpty()) {
-            if (fullName) return Path.of("blueprints", "%s", "scans", name + ".blueprint").toString();
-            return name.substring(name.lastIndexOf('/') + 1) + ".blueprint";
-          }
+        final ScanToolData scanToolData = ScanToolData.readFromItemStack(structurizeItem);
+        final String scanName = scanToolData.currentSlot().name();
+        if (!scanName.isEmpty()) {
+          if (fullName) return Path.of("blueprints", "%s", "scans", scanName + ".blueprint").toString();
+          return scanName.substring(scanName.lastIndexOf('/') + 1) + ".blueprint";
         }
       } else if (slot == 1) return "";
 
-      String createFileName = null;
-      final CompoundTag tag = createItem.getTag();
-      if (tag != null && tag.contains("File", CompoundTag.TAG_STRING)) {
-        createFileName = tag.getString("File");
-      }
+      String createFileName = createItem.getOrDefault(schematicFile, "");
 
-      if (createFileName == null || createFileName.isEmpty()) return null;
+      if (createFileName.isEmpty()) return null;
       if (slot == 0) {
         if (fullName) return Path.of("schematics", "uploaded", "%s", createFileName).toString();
         return createFileName;
@@ -309,11 +301,8 @@ public class SchematicTableEntity extends BlockEntity {
     if (toBlueprint && slot == 1) {
       final ItemStack structurizeItem = inventory.getStackInSlot(1);
       if (structurizeItem.is(scanTool)) {
-        final CompoundTag tag = structurizeItem.getTag();
-        if (tag != null && tag.contains("structurize:name", CompoundTag.TAG_STRING)) {
-          final String nameInScanTool = tag.getString("structurize:name");
-          return nameInScanTool.isEmpty();
-        }
+        final ScanToolData scanToolData = ScanToolData.readFromItemStack(structurizeItem);
+        return scanToolData.currentSlot().name().isEmpty();
       }
       return true;
     } else return !toBlueprint && slot == 0;

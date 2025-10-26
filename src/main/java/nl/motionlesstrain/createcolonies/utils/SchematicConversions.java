@@ -15,6 +15,8 @@ import net.minecraft.util.datafix.DataFixers;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.neoforged.neoforge.network.PacketDistributor;
 import nl.motionlesstrain.createcolonies.network.messages.SaveNBTFileMessage;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
@@ -27,7 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nullable;
 
-import static nl.motionlesstrain.createcolonies.network.MessagesHandler.NETWORK;
+import static nl.motionlesstrain.createcolonies.resources.CreateResources.DataComponentTypes.*;
 import static nl.motionlesstrain.createcolonies.utils.ItemUtils.stackFromNullable;
 
 public class SchematicConversions {
@@ -174,7 +176,7 @@ public class SchematicConversions {
       });
     }
 
-    NETWORK.send(PacketDistributor.PLAYER.with(() -> player), new SaveNBTFileMessage(targetPath.toString(), blueprint));
+    PacketDistributor.sendToPlayer(player, new SaveNBTFileMessage(targetPath.toString(), blueprint));
   }
 
   public static ItemStack structurizeToCreate(ServerPlayer player, String source, String destination) throws IOException {
@@ -289,18 +291,17 @@ public class SchematicConversions {
       LOGGER.error("Saving of schematic file failed", e);
     }
 
-    NETWORK.send(PacketDistributor.PLAYER.with(() -> player), new SaveNBTFileMessage(clientPath.toString(), schematic));
+    PacketDistributor.sendToPlayer(player, new SaveNBTFileMessage(clientPath.toString(), schematic));
 
     final String targetName = targetPath.getFileName().toString();
     final ItemStack fullSchematic = CreateResources.Items.schematic.toStack();
-    final CompoundTag schematicData = fullSchematic.getOrCreateTag();
-    schematicData.put("Anchor", BlockPosUtil.toNBT(BlockPos.ZERO));
-    schematicData.put("Bounds", BlockPosUtil.toNBTList(size));
-    schematicData.putByte("Deployed", (byte)0);
-    schematicData.putString("File", targetName);
-    schematicData.putString("Mirror", "NONE");
-    schematicData.putString("Owner", playerName);
-    schematicData.putString("Rotation", "NONE");
+    fullSchematic.set(schematicAnchor, BlockPos.ZERO);
+    fullSchematic.set(schematicBounds, size);
+    fullSchematic.set(schematicDeployed, Boolean.FALSE);
+    fullSchematic.set(schematicFile, targetName);
+    fullSchematic.set(schematicMirror, Mirror.NONE);
+    fullSchematic.set(schematicOwner, playerName);
+    fullSchematic.set(schematicRotation, Rotation.NONE);
 
     return fullSchematic;
   }
