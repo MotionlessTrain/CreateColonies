@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.0-beta.6
+
+### Patch Changes
+
+- chore: 1.20.6 changes (Event result rework) ([`251010b`](https://github.com/MotionlessTrain/CreateColonies/commit/251010b2d6717e1ad3538fdac0b59f4b90737ac8))
+
 ## 2.0.0-beta.5
 
 ### Patch Changes
