@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.0-beta.10
+
+### Patch Changes
+
+- chore: fix release script more (unfortunately every change there needs a new changelog entry, in order to actually start running it) ([`3fa4b57`](https://github.com/MotionlessTrain/CreateColonies/commit/3fa4b571091753e0bbdc79f7fab5275b6c4238c2))
+
 ## 2.0.0-beta.9
 
 ### Patch Changes
