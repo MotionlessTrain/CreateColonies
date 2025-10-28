@@ -25,10 +25,21 @@ import java.nio.file.Path;
 
 import static nl.motionlesstrain.createcolonies.CreateColonies.MODID;
 
-public record SaveNBTFileMessage(String filePath, CompoundTag fileContents) implements NetworkMessage {
+public class SaveNBTFileMessage extends ClientBoundNetworkMessage {
   private static final CustomPacketPayload.Type<SaveNBTFileMessage> TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(MODID, "save_nbt_file")
   );
+
+  private final String filePath;
+  private final CompoundTag fileContents;
+
+  public SaveNBTFileMessage(final String filePath, final CompoundTag fileContents) {
+    this.filePath = filePath;
+    this.fileContents = fileContents;
+  }
+
+  public String filePath() { return filePath; }
+  public CompoundTag fileContents() { return fileContents; }
 
   @Override
   public @NotNull Type<? extends CustomPacketPayload> type() {
@@ -44,24 +55,29 @@ public record SaveNBTFileMessage(String filePath, CompoundTag fileContents) impl
 
   private static final Logger LOGGER = LogUtils.getLogger();
 
-  private static class ClientNBTSaver implements IPayloadHandler<SaveNBTFileMessage> {
+  @Override
+  ClientSideHandler getHandler() {
+    return new ClientNBTSaver();
+  }
+
+  private class ClientNBTSaver implements ClientBoundNetworkMessage.ClientSideHandler {
     @Override
-    public void handle(SaveNBTFileMessage message, @NotNull IPayloadContext context) {
+    public void handleMessage(@NotNull IPayloadContext context) {
       final Path gamePath = Minecraft.getInstance().gameDirectory.toPath();
-      final Path saveFile = gamePath.resolve(message.filePath);
+      final Path saveFile = gamePath.resolve(filePath);
       try {
-        NbtIo.writeCompressed(message.fileContents, saveFile);
+        NbtIo.writeCompressed(fileContents, saveFile);
         final @Nullable Player player = Minecraft.getInstance().player;
         if (player != null) {
           player.displayClientMessage(Component.translatable("nl.motionlesstrain.createcolonies.convert.confirm"), false);
         }
       } catch (IOException e) {
-        LOGGER.error("Could not save file {}", message.filePath, e);
+        LOGGER.error("Could not save file {}", filePath, e);
       }
     }
   }
 
-  public static class Factory implements NetworkMessage.Factory<SaveNBTFileMessage> {
+  public static class Factory extends ClientBoundNetworkMessage.Factory<SaveNBTFileMessage> {
 
     @Override
     public Type<SaveNBTFileMessage> type() {
@@ -71,11 +87,6 @@ public record SaveNBTFileMessage(String filePath, CompoundTag fileContents) impl
     @Override
     public StreamCodec<? super RegistryFriendlyByteBuf, SaveNBTFileMessage> streamCodec() {
       return STREAM_CODEC;
-    }
-
-    @Override
-    public IPayloadHandler<SaveNBTFileMessage> handler() {
-      return new ClientNBTSaver();
     }
   }
 }
