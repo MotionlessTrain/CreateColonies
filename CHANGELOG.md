@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.0-beta.12
+
+### Patch Changes
+
+- fix: The network part had a logical error in it, which meant some code that was only meant for clients got loaded on the server by accident. Fixes #27 ([`13aca56`](https://github.com/MotionlessTrain/CreateColonies/commit/13aca560ad5eb2b878928c25a703e8417e8c6729))
+
 ## 2.0.0-beta.11
 
 ### Patch Changes
