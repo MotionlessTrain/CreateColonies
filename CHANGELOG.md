@@ -1,5 +1,41 @@
 # CreateColonies
 
+## 2.0.0
+
+### Major Changes
+
+- chore: Start work on 1.21.1 ([`91c1342`](https://github.com/MotionlessTrain/CreateColonies/commit/91c1342947e0ca73b9770a43865aa22470e01b59))
+
+### Patch Changes
+
+- chore: Rename imports and classes to Neoforge names ([#16](https://github.com/MotionlessTrain/CreateColonies/pull/16))
+
+- chore: 1.20.6 changes (Event result rework) ([`251010b`](https://github.com/MotionlessTrain/CreateColonies/commit/251010b2d6717e1ad3538fdac0b59f4b90737ac8))
+
+- chore: 1.20.4 changes (Network rework) ([`3fcf28e`](https://github.com/MotionlessTrain/CreateColonies/commit/3fcf28eee5693a738996d1f7eaa1acadbe167f00))
+
+- chore: Fix release script ([`a6dc30d`](https://github.com/MotionlessTrain/CreateColonies/commit/a6dc30db7e0525bec224da80ef66175e86c4a00d))
+
+- chore: 1.20.2 changes ([`7d38534`](https://github.com/MotionlessTrain/CreateColonies/commit/7d38534b5e049c69edcd006e02ffd0aaa5134584))
+
+- fix: The network part had a logical error in it, which meant some code that was only meant for clients got loaded on the server by accident. Fixes #27 ([`13aca56`](https://github.com/MotionlessTrain/CreateColonies/commit/13aca560ad5eb2b878928c25a703e8417e8c6729))
+
+- chore: fix release script more (unfortunately every change there needs a new changelog entry, in order to actually start running it) ([`3fa4b57`](https://github.com/MotionlessTrain/CreateColonies/commit/3fa4b571091753e0bbdc79f7fab5275b6c4238c2))
+
+- chore: 1.21 changes + structurize changes ([`dd77c3b`](https://github.com/MotionlessTrain/CreateColonies/commit/dd77c3b02f71743417651af2384d25c9c8204ae9))
+
+- chore: Set up (neo)gradle for 1.21.1 ([`8b5fb31`](https://github.com/MotionlessTrain/CreateColonies/commit/8b5fb3133e214199358711c35eceda539e7c534a))
+
+- chore: 1.20.5 changes ([`10c7f51`](https://github.com/MotionlessTrain/CreateColonies/commit/10c7f5143de87f9e542ffa51ec6975c279482160))
+
+- chore: 1.20.3 changes (Capabilities) ([`fee2c72`](https://github.com/MotionlessTrain/CreateColonies/commit/fee2c72069abdca9a4090a90ad26eeaedba14706))
+
+- fix: Small porting issues, mostly due to different BlockPos storage between 1.20.1 and 1.21.1 ([`b4d1858`](https://github.com/MotionlessTrain/CreateColonies/commit/b4d1858e9363864330fd56c9aa54b76c36dc720b))
+
+- chore: datapack renames ([`43f7732`](https://github.com/MotionlessTrain/CreateColonies/commit/43f77324904b615c7704b40863ecc87968ec5aa1))
+
+- chore: Release script fix ([`dc9a09b`](https://github.com/MotionlessTrain/CreateColonies/commit/dc9a09b64d89b329edb2307abe865745b59baf65))
+
 ## 2.0.0-beta.12
 
 ### Patch Changes
