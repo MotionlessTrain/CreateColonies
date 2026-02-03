@@ -44,7 +44,7 @@ public class InteractionHook {
         final BlockState blockStateClicked = world.getBlockState(blockPosClicked);
         final ItemStack heldItem = evt.getItemStack();
 
-        if (blockHutBuilder.isPresent() && blockStateClicked.is(blockHutBuilder.get()) && clipboard != null && heldItem.is(clipboard)) {
+        if (blockHutBuilder.isBound() && blockStateClicked.is(blockHutBuilder) && clipboard.isBound() && heldItem.is(clipboard)) {
             evt.setCanceled(true);
             evt.setCancellationResult(InteractionResult.SUCCESS);
             
