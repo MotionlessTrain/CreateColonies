@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.1
+
+### Patch Changes
+
+- fix: Crash of Create clipboard with the Minecolonies builder's hut (fixes [#30](https://github.com/MotionlessTrain/CreateColonies/issues/30)) ([#31](https://github.com/MotionlessTrain/CreateColonies/pull/31))
+
 ## 2.0.0
 
 ### Major Changes
