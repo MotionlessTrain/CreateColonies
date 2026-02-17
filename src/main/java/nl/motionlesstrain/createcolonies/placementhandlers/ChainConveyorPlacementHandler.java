@@ -2,6 +2,7 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 
 import com.ldtteam.structurize.api.RotationMirror;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
+import com.ldtteam.structurize.placement.IPlacementContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.placement.PlacementContext;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
@@ -30,7 +32,7 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
   }
 
   @Override
-  public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
+  public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
     if (compoundTag != null) {
       final int neededChains = BlockPosUtil.getList(compoundTag, "Connections").stream().filter(connectionPos ->
         connectionPos.getX() == 0 ? connectionPos.getZ() > 0 : connectionPos.getX() > 0
@@ -46,7 +48,7 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
   private final Map<BlockPos, Map<BlockPos, ConveyorInfo>> connections = new HashMap<>();
 
   @Override
-  public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
+  public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, IPlacementContext placementContext) {
     if (tileEntityData != null) {
       final List<BlockPos> connections = BlockPosUtil.getList(tileEntityData, "Connections");
       final ListTag newConnections = new ListTag();
@@ -54,13 +56,13 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
       final Map<BlockPos, ConveyorInfo> existingConnections = this.connections.getOrDefault(pos, Map.of());
 
       for (final BlockPos blockPos : connections) {
-        final BlockPos newBlockPos = blockPos.rotate(blueprint.getRotationMirror().rotation());
+        final BlockPos newBlockPos = blockPos.rotate(placementContext.getRotationMirror().rotation());
 
         if (existingConnections.containsKey(newBlockPos)) {
           final ConveyorInfo info = existingConnections.remove(newBlockPos);
           final ListTag infoConnections = info.blockEntity().getList("Connections", Tag.TAG_INT_ARRAY);
           BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, info.newBlockPos()).ifSuccess(infoConnections::add);
-          handleTileEntityPlacement(info.blockEntity(), world, info.pos(), settings);
+          handleTileEntityPlacement(info.blockEntity(), world, info.pos(), placementContext.getRotationMirror());
 
           BlockPos.CODEC.encodeStart(NbtOps.INSTANCE, newBlockPos).ifSuccess(newConnections::add);
         } else {
@@ -71,6 +73,6 @@ public class ChainConveyorPlacementHandler extends SimplePlacementHandler {
       }
       tileEntityData.put("Connections", newConnections);
     }
-    return super.handle(blueprint, world, pos, blockState, tileEntityData, complete, centerPos, settings);
+    return super.handle(world, pos, blockState, tileEntityData, placementContext);
   }
 }

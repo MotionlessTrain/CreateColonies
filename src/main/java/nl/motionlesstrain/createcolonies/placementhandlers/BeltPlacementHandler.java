@@ -2,18 +2,22 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 
 import com.ldtteam.structurize.api.RotationMirror;
 import com.ldtteam.structurize.api.constants.Constants;
+import com.ldtteam.structurize.placement.IPlacementContext;
 import com.ldtteam.structurize.placement.handlers.placement.IPlacementHandler;
 import com.simibubi.create.content.kinetics.belt.BeltBlock;
 import com.simibubi.create.content.kinetics.belt.BeltPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
 import nl.motionlesstrain.createcolonies.utils.ItemUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
@@ -28,7 +32,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
     private final Map<BlockPos, Map<BlockPos, List<ItemStack>>> beltItems = new HashMap<>();
 
     @Override
-    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
+    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, @NotNull IPlacementContext placementContext) {
         final List<ItemStack> requiredItems = new ArrayList<>();
 
         if (blockState.hasProperty(BeltBlock.PART)) {
@@ -75,11 +79,16 @@ public class BeltPlacementHandler implements IPlacementHandler {
         return requiredItems;
     }
 
-    private record BeltInfo(BlockPos pos, BlockState state, @Nullable CompoundTag tag) {}
+  @Override
+  public boolean doesWorldStateMatchBlueprintState(BlockState worldState, BlockState blueprintState, @Nullable Tuple<BlockEntity, CompoundTag> blockEntityData, @NotNull IPlacementContext placementContext) {
+    return worldState.equals(blueprintState);
+  }
+
+  private record BeltInfo(BlockPos pos, BlockState state, @Nullable CompoundTag tag) {}
 
     private final Map<BlockPos, SortedMap<BlockPos, BeltInfo>> beltParts = new HashMap<>();
     @Override
-    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
+    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, IPlacementContext placementContext) {
         if (tileEntityData == null) return ActionProcessingResult.DENY;
 
         final var controllerPos = BlockPosUtil.fromNBT(tileEntityData, "Controller");
@@ -98,7 +107,7 @@ public class BeltPlacementHandler implements IPlacementHandler {
                     }
                     return ActionProcessingResult.DENY;
                 }
-                handleTileEntityPlacement(info.tag(), world, info.pos(), settings);
+                handleTileEntityPlacement(info.tag(), world, info.pos(), placementContext.getRotationMirror());
             }
             beltParts.remove(controllerPos);
             beltItems.remove(controllerPos);

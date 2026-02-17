@@ -31,7 +31,7 @@ public class GearPlacementHandler extends SimplePlacementHandler {
   }
 
   @Override
-  public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
+  public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
     final ItemStack requirement = gearRequirements.get(BuiltInRegistries.BLOCK.getKey(blockState.getBlock()));
     return requirement == null ? List.of() : List.of(requirement);
   }

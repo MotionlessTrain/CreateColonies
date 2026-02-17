@@ -2,6 +2,7 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 
 import com.ldtteam.structurize.api.RotationMirror;
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
+import com.ldtteam.structurize.placement.IPlacementContext;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -26,7 +27,7 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
   }
 
   @Override
-  public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
+  public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
 
     final List<ItemStack> neededItems = new ArrayList<>();
     neededItems.add(ItemUtils.stackFromDeferred(CreateResources.Blocks.track));
@@ -68,8 +69,8 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
   };
 
   @Override
-  public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, RotationMirror settings) {
-    final RotationMirror blueprintRotation = blueprint.getRotationMirror();
+  public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, IPlacementContext placementContext) {
+    final RotationMirror blueprintRotation = placementContext.getRotationMirror();
 
     if (tileEntityData != null && tileEntityData.contains("Connections", Tag.TAG_LIST)) {
       final ListTag connections = tileEntityData.getList("Connections", Tag.TAG_COMPOUND);
@@ -111,6 +112,6 @@ public class TrackPlacementHandler extends SimplePlacementHandler {
       }
     }
 
-    return super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
+    return super.handle(world, pos, blockState, tileEntityData, placementContext);
   }
 }

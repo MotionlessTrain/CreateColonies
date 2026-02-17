@@ -18,7 +18,7 @@ public class TrainBogeyPlacementHandler extends SimplePlacementHandler {
     }
 
     @Override
-    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
+    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
         return List.of(ItemUtils.stackFromDeferred(CreateResources.Items.trainCasing));
     }
 }
