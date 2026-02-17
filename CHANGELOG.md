@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.3
+
+### Patch Changes
+
+- fix: Changes to reflect Structurize's bugfix in Structurize 1.1.808 ([`3b88cf5`](https://github.com/MotionlessTrain/CreateColonies/commit/3b88cf5e8cdff39d3e745fe10929dbb060c28923))
+
 ## 2.0.2
 
 ### Patch Changes
