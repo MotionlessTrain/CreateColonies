@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 2.0.2
+
+### Patch Changes
+
+- fix: building of 2.0.1 ([`d989fb5`](https://github.com/MotionlessTrain/CreateColonies/commit/d989fb5793355a2be6de16e7e37828cb9b676202))
+
 ## 2.0.1
 
 ### Patch Changes
