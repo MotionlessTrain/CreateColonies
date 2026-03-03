@@ -1,6 +1,5 @@
 package nl.motionlesstrain.createcolonies.placementhandlers;
 
-import com.ldtteam.structurize.placement.handlers.placement.IPlacementHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +19,7 @@ public class EncasedShaftPlacementHandler extends SimplePlacementHandler {
     }
 
     @Override
-    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
+    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
         return List.of(ItemUtils.stackFromNullable(CreateResources.Items.shaft));
     }
 }

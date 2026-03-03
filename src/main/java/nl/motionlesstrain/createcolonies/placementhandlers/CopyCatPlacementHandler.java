@@ -21,7 +21,7 @@ public class CopyCatPlacementHandler extends SimplePlacementHandler {
     }
 
     @Override
-    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag, boolean b) {
+    public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
         final List<ItemStack> itemList = new ArrayList<>();
         itemList.add(BlockUtils.getItemStackFromBlockState(blockState));
         if (compoundTag != null && compoundTag.contains("Item", Tag.TAG_COMPOUND)) {

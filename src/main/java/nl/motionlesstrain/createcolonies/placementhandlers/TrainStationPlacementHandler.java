@@ -2,8 +2,8 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 
 
 import com.ldtteam.structurize.blueprints.v1.Blueprint;
+import com.ldtteam.structurize.placement.IPlacementContext;
 import com.ldtteam.structurize.placement.handlers.placement.PlacementHandlers;
-import com.ldtteam.structurize.util.PlacementSettings;
 import com.ldtteam.structurize.util.RotationMirror;
 import com.simibubi.create.content.trains.track.TrackBlock;
 import com.simibubi.create.content.trains.track.TrackShape;
@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import nl.motionlesstrain.createcolonies.resources.CreateResources;
 import nl.motionlesstrain.createcolonies.utils.BlockPosUtil;
@@ -37,12 +36,13 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
     }
 
     @Override
-    public ActionProcessingResult handle(Blueprint blueprint, Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, boolean complete, BlockPos centerPos, PlacementSettings settings) {
+    public ActionProcessingResult handle(Level world, BlockPos pos, BlockState blockState, @Nullable CompoundTag tileEntityData, IPlacementContext placementContext) {
+        final Blueprint blueprint = placementContext.getBluePrint();
         if (tileEntityData != null && tileEntityData.contains("TargetTrack")) {
-            final RotationMirror blueprintRotation = blueprint.getRotationMirror();
+            final RotationMirror blueprintRotation = placementContext.getRotationMirror().getRotationMirror();
             final var newData = fixTargetTrack(tileEntityData.getCompound("TargetTrack"), blueprintRotation);
 
-            final BlockPos bottomLeftCorner = centerPos.subtract(blueprint.getPrimaryBlockOffset());
+            final BlockPos bottomLeftCorner = placementContext.getCenterPos().subtract(blueprint.getPrimaryBlockOffset());
             final BlockPos blueprintPos = pos.subtract(bottomLeftCorner);
             final BlockPos trackPos = blueprintPos.offset(newData.getA());
             final BlockState trackState = blueprint.getBlockState(trackPos);
@@ -74,6 +74,6 @@ public class TrainStationPlacementHandler extends PlacementHandlers.GeneralBlock
             tileEntityData.put("TargetTrack", newData.getB());
         }
 
-        return super.handle(world, pos, blockState, tileEntityData, complete, centerPos, settings);
+        return super.handle(world, pos, blockState, tileEntityData, placementContext);
     }
 }
