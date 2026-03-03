@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 1.0.2
+
+### Patch Changes
+
+- fix: The build script couldn't find the version it should have released ([`6c10152`](https://github.com/MotionlessTrain/CreateColonies/commit/6c10152cd2872acb358cfd7b41d4a43bbaef9563))
+
 ## 1.0.1
 
 ### Patch Changes
