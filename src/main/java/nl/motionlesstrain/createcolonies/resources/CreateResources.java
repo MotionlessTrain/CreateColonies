@@ -60,6 +60,12 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:block", value = "create:chain_conveyor")
     public static Block chainConveyor;
+
+    @ObjectHolder(registryName = "minecraft:block", value = "create:elevator_contact")
+    public static Block elevatorContact;
+
+    @ObjectHolder(registryName = "minecraft:block", value = "create:redstone_contact")
+    public static Block redstoneContact;
   }
 
   public static class Items {
