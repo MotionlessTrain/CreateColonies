@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 1.0.3
+
+### Patch Changes
+
+- Fix: Ask for redstone contacts instead of elevator contacts. Closes https://github.com/MotionlessTrain/CreateColonies/issues/38 ([#39](https://github.com/MotionlessTrain/CreateColonies/pull/39))
+
 ## 1.0.2
 
 ### Patch Changes
