@@ -12,6 +12,7 @@ public class PlacementHandlers {
         addHandler(new ChainConveyorPlacementHandler());
         addHandler(new CopyCatPlacementHandler());
         addHandler(new DeployerPlacementHandler());
+        addHandler(new ElevatorPlacementHandler());
         addHandler(new EncasedShaftPlacementHandler());
         addHandler(new EncasedPipePlacementHandler());
         addHandler(new GearPlacementHandler());

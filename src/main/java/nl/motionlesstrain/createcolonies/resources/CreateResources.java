@@ -53,6 +53,10 @@ public class CreateResources extends Resources {
     public static DeferredBlock<Block> brassEncasedLargeCogwheel = createBlock("brass_encased_large_cogwheel");
 
     public static DeferredBlock<Block> chainConveyor = createBlock("chain_conveyor");
+
+    public static DeferredBlock<Block> elevatorContact = createBlock("elevator_contact");
+    public static DeferredBlock<Block> redstoneContact = createBlock("redstone_contact");
+
   }
 
   public static class Items {
