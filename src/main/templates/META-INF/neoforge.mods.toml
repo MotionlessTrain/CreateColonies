@@ -80,7 +80,7 @@ issueTrackerURL="https://www.github.com/MotionlessTrain/CreateColonies/issues" #
     modId="minecolonies"
     mandatory=false
     versionRange="[${minecolonies_version}, )"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
