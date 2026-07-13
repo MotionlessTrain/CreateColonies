@@ -80,7 +80,7 @@ license="${mod_license}"
     modId="minecolonies"
     mandatory=false
     versionRange="[${project.minecolonies_version}, )"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares

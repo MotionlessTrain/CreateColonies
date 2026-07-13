@@ -66,6 +66,12 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:block", value = "create:redstone_contact")
     public static Block redstoneContact;
+
+    @ObjectHolder(registryName = "minecraft:block", value = "create:metal_girder_encased_shaft")
+    public static Block metalGirderEncasedShaft;
+
+    @ObjectHolder(registryName = "minecraft:block", value = "create:lectern_controller")
+    public static Block lecternController;
   }
 
   public static class Items {
@@ -110,5 +116,8 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:item", value = "create:chain_conveyor")
     public static Item chainConveyor;
+
+    @ObjectHolder(registryName = "minecraft:item", value = "create:linked_controller")
+    public static Item linkedController;
   }
 }
