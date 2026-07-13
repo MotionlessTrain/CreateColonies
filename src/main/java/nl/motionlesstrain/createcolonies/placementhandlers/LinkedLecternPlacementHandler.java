@@ -24,6 +24,6 @@ public class LinkedLecternPlacementHandler extends SimplePlacementHandler {
 
   @Override
   public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
-    return List.of(new ItemStack(Items.LECTERN), ItemUtils.stackFromNullable(CreateResources.Items.linkedController));
+    return List.of(new ItemStack(Items.LECTERN), ItemUtils.stackFromDeferred(CreateResources.Items.linkedController));
   }
 }

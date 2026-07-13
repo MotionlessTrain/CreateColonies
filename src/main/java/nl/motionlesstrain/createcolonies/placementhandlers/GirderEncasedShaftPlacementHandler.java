@@ -20,8 +20,8 @@ public class GirderEncasedShaftPlacementHandler extends SimplePlacementHandler {
   @Override
   public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
     return List.of(
-        ItemUtils.stackFromNullable(CreateResources.Items.shaft),
-        ItemUtils.stackFromNullable(CreateResources.Items.metalGirder)
+        ItemUtils.stackFromDeferred(CreateResources.Items.shaft),
+        ItemUtils.stackFromDeferred(CreateResources.Items.metalGirder)
     );
   }
 }
