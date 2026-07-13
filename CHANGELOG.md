@@ -1,5 +1,13 @@
 # CreateColonies
 
+## 1.0.4
+
+### Patch Changes
+
+- Fix shafts with metal girders not requiring either material (closes https://github.com/MotionlessTrain/CreateColonies/issues/43) ([#48](https://github.com/MotionlessTrain/CreateColonies/pull/48))
+
+- Fix lectern controllers not asking for either the linked controller, nor the lectern (closes https://github.com/MotionlessTrain/CreateColonies/issues/47) ([#48](https://github.com/MotionlessTrain/CreateColonies/pull/48))
+
 ## 1.0.3
 
 ### Patch Changes
