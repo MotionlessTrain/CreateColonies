@@ -9,6 +9,11 @@ public class Minecolonies {
     public void run(Supplier<Runnable> ignored) {
       // Do nothing, as Minecolonies is not installed
     }
+
+    @Override
+    public void runOrElse(Supplier<Runnable> ifInstalled, Supplier<Runnable> alternative) {
+      alternative.get().run();
+    }
   }
 
   private static class MinecoloniesInstalled implements CompatRunner {
@@ -16,6 +21,11 @@ public class Minecolonies {
     public void run(Supplier<Runnable> suppl) {
       final Runnable function = suppl.get();
       function.run();
+    }
+
+    @Override
+    public void runOrElse(Supplier<Runnable> ifInstalled, Supplier<Runnable> alternative) {
+      ifInstalled.get().run();
     }
   }
 
@@ -30,5 +40,8 @@ public class Minecolonies {
 
   public static void runIfInstalled(Supplier<Runnable> code) {
     minecoloniesRunner.run(code);
+  }
+  public static void runIfInstalledOr(Supplier<Runnable> ifInstalled, Supplier<Runnable> alternative) {
+    minecoloniesRunner.runOrElse(ifInstalled, alternative);
   }
 }

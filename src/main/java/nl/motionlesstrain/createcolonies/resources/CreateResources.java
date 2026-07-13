@@ -57,6 +57,9 @@ public class CreateResources extends Resources {
     public static DeferredBlock<Block> elevatorContact = createBlock("elevator_contact");
     public static DeferredBlock<Block> redstoneContact = createBlock("redstone_contact");
 
+    public static DeferredBlock<Block> metalGirderEncasedShaft = createBlock("metal_girder_encased_shaft");
+
+    public static DeferredBlock<Block> lecternController = createBlock("lectern_controller")
   }
 
   public static class Items {
@@ -77,6 +80,8 @@ public class CreateResources extends Resources {
     public static DeferredItem<Item> schematic = createItem("schematic");
 
     public static DeferredItem<Item> andesiteCasing = createItem("andesite_casing");
+
+    public static DeferredItem<Item> linkedController = createItem("linked_controller")
   }
 
   private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> createDataComponentType(String path) {
