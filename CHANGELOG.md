@@ -1,5 +1,17 @@
 # CreateColonies
 
+## 2.0.5
+
+### Patch Changes
+
+- (Hopefully) fix Minecolonies dependency, such that it is truly optional ([#45](https://github.com/MotionlessTrain/CreateColonies/pull/45))
+
+## 2.0.4
+
+### Patch Changes
+
+- Fix: Ask for redstone contacts instead of elevator contacts ([#40](https://github.com/MotionlessTrain/CreateColonies/pull/40))
+
 ## 2.0.3
 
 ### Patch Changes
