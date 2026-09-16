@@ -57,6 +57,8 @@ public class CreateResources extends Resources {
     public static DeferredBlock<Block> elevatorContact = createBlock("elevator_contact");
     public static DeferredBlock<Block> redstoneContact = createBlock("redstone_contact");
 
+    public static DeferredBlock<Block> itemVault = createBlock("item_vault");
+
   }
 
   public static class Items {
