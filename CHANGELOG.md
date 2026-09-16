@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 1.0.5
+
+### Patch Changes
+
+- Make sure the item vault doesn't crash the game, and forms its multiblock correctly when being built ([#53](https://github.com/MotionlessTrain/CreateColonies/pull/53))
+
 ## 1.0.4
 
 ### Patch Changes
