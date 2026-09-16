@@ -72,6 +72,9 @@ public class CreateResources {
 
     @ObjectHolder(registryName = "minecraft:block", value = "create:lectern_controller")
     public static Block lecternController;
+
+    @ObjectHolder(registryName = "minecraft:block", value = "create:item_vault")
+    public static Block itemVault;
   }
 
   public static class Items {
