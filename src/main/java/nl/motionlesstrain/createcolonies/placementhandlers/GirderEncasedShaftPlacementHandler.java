@@ -1,0 +1,27 @@
+package nl.motionlesstrain.createcolonies.placementhandlers;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import nl.motionlesstrain.createcolonies.resources.CreateResources;
+import nl.motionlesstrain.createcolonies.utils.ItemUtils;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public class GirderEncasedShaftPlacementHandler extends SimplePlacementHandler {
+  @Override
+  public boolean canHandle(Level level, BlockPos blockPos, BlockState blockState) {
+    return blockState.is(CreateResources.Blocks.metalGirderEncasedShaft);
+  }
+
+  @Override
+  public List<ItemStack> getRequiredItems(Level level, BlockPos blockPos, BlockState blockState, @Nullable CompoundTag compoundTag) {
+    return List.of(
+        ItemUtils.stackFromDeferred(CreateResources.Items.shaft),
+        ItemUtils.stackFromDeferred(CreateResources.Items.metalGirder)
+    );
+  }
+}

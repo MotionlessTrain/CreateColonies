@@ -2,6 +2,7 @@ package nl.motionlesstrain.createcolonies.placementhandlers;
 
 import com.ldtteam.structurize.placement.handlers.placement.IPlacementHandler;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import nl.motionlesstrain.createcolonies.compatibility.Minecolonies;
 
 public class PlacementHandlers {
     private static void addHandler(IPlacementHandler handler) {
