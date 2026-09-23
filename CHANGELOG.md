@@ -1,5 +1,13 @@
 # CreateColonies
 
+## 2.0.7
+
+### Patch Changes
+
+- Make sure the item vault doesn't crash the game, and forms its multiblock correctly when being built (closes https://github.com/MotionlessTrain/CreateColonies/issues/52) ([#58](https://github.com/MotionlessTrain/CreateColonies/pull/58))
+
+- Make sure that when you use a schematic in a local pack in the schematic workbench, that it can convert it in a create schematic (Fixes https://github.com/MotionlessTrain/CreateColonies/issues/55) ([#57](https://github.com/MotionlessTrain/CreateColonies/pull/57))
+
 ## 2.0.6
 
 ### Patch Changes
