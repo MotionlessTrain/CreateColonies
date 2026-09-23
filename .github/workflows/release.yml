@@ -8,7 +8,9 @@ name: Release CreateColonies
 
 on:
   release:
-    types: [created,edited]
+    types:
+      - created
+      - edited
 
 permissions:
   contents: write
