@@ -185,14 +185,19 @@ public class SchematicConversions {
     final Path targetPath = Path.of(String.format(destination, playerName));
 
     final Path sourcePath = Path.of(source);
-    final String packId = sourcePath.getName(0).toString();
-    final Path subPath = sourcePath.subpath(1, sourcePath.getNameCount());
-    final var pack = StructurePacks.getStructurePack(packId);
-    if (pack == null) {
-      LOGGER.error("Unable to find pack with name {}", packId);
-      return ItemUtils.stackFromDeferred(CreateResources.Items.emptySchematic);
+    Path resolved;
+    if (sourcePath.isAbsolute()) {
+      resolved = sourcePath;
+    } else {
+      final String packId = sourcePath.getName(0).toString();
+      final Path subPath = sourcePath.subpath(1, sourcePath.getNameCount());
+      final var pack = StructurePacks.getStructurePack(packId);
+      if (pack == null) {
+        LOGGER.error("Unable to find pack with name {}", packId);
+        return ItemUtils.stackFromDeferred(CreateResources.Items.emptySchematic);
+      }
+      resolved = pack.getPath().resolve(pack.getSubPath(subPath));
     }
-    final Path resolved = pack.getPath().resolve(pack.getSubPath(subPath));
 
     final CompoundTag blueprint = NbtIo.readCompressed(Files.newInputStream(resolved), NbtAccounter.unlimitedHeap());
 
