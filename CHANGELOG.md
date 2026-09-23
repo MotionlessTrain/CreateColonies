@@ -1,5 +1,11 @@
 # CreateColonies
 
+## 1.0.6
+
+### Patch Changes
+
+- Make sure that when you use a schematic in a local pack in the schematic workbench, that it can convert it in a create schematic ([#56](https://github.com/MotionlessTrain/CreateColonies/pull/56))
+
 ## 1.0.5
 
 ### Patch Changes
