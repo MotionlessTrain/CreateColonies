@@ -2,7 +2,6 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
 name: Java CI with Gradle
@@ -10,6 +9,7 @@ name: Java CI with Gradle
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -83,7 +83,7 @@ jobs:
         with:
           file_path: ./build/libs/createcolonies-${{ needs.get-versions.outputs.mod_version }}.jar
           game_endpoint: minecraft
-          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }}:${{ needs.get-versions.outputs.minecraft_version }},Java ${{ needs.get-versions.outputs.java_version }},${{ needs.get-versions.outputs.loader_name }}"
+          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }}:${{ needs.get-versions.outputs.minecraft_version }},Java ${{ needs.get-versions.outputs.java_version }},${{ needs.get-versions.outputs.loader_name }}",client,server
           project_id: "1332665"
           token: "${{ secrets.CURSE_TOKEN }}"
           changelog: ${{ github.event.release.body }}
