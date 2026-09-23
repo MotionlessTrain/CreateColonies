@@ -83,7 +83,7 @@ jobs:
         with:
           file_path: ./build/libs/createcolonies-${{ needs.get-versions.outputs.mod_version }}.jar
           game_endpoint: minecraft
-          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }}:${{ needs.get-versions.outputs.minecraft_version }},Java ${{ needs.get-versions.outputs.java_version }},${{ needs.get-versions.outputs.loader_name }}",client,server
+          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }}:${{ needs.get-versions.outputs.minecraft_version }},Java ${{ needs.get-versions.outputs.java_version }},${{ needs.get-versions.outputs.loader_name }},client,server"
           project_id: "1332665"
           token: "${{ secrets.CURSE_TOKEN }}"
           changelog: ${{ github.event.release.body }}
