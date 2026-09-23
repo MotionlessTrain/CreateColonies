@@ -60,6 +60,8 @@ public class CreateResources extends Resources {
     public static DeferredBlock<Block> metalGirderEncasedShaft = createBlock("metal_girder_encased_shaft");
 
     public static DeferredBlock<Block> lecternController = createBlock("lectern_controller");
+
+    public static DeferredBlock<Block> itemVault = createBlock("item_vault");
   }
 
   public static class Items {

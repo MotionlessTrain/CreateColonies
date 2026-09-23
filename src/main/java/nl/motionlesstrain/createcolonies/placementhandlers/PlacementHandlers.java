@@ -21,6 +21,7 @@ public class PlacementHandlers {
       addHandler(new TrainBogeyPlacementHandler());
       addHandler(new TrainStationPlacementHandler());
       addHandler(new TrackPlacementHandler());
+      addHandler(new VaultPlacementHandler());
 
       // Minecolonies also has a handler for lecterns, which also triggers on Create's lectern
       // This ensures that ours gets added later (and thus has higher priority) than minecolonies',

@@ -2,14 +2,15 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Release CreateColonies
 
 on:
   release:
-    types: [created]
+    types:
+      - created
+      - edited
 
 permissions:
   contents: write
@@ -42,6 +43,7 @@ jobs:
         run: |
           gitRef="${{ github.ref }}"
           tagName=$(echo "${gitRef/refs\/tags\//}")
+          echo "::notice::version: ${tagName/v/}"
           echo "mod_version=${tagName/v/}" >> "$GITHUB_OUTPUT"
           inFix=$(echo $tagName | sed 's/.*-\(.*\)\..*/\1/')
           echo "release_type=$(test beta = $inFix && echo beta || ( test alpha = $inFix && echo alpha ) || release)" >> "$GITHUB_OUTPUT"
@@ -83,7 +85,7 @@ jobs:
         with:
           file_path: ./build/libs/createcolonies-${{ needs.get-versions.outputs.mod_version }}.jar
           game_endpoint: minecraft
-          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }}:${{ needs.get-versions.outputs.minecraft_version }},Java ${{ needs.get-versions.outputs.java_version }},${{ needs.get-versions.outputs.loader_name }}"
+          game_versions: "Minecraft ${{ needs.get-versions.outputs.minecraft_major }}:${{ needs.get-versions.outputs.minecraft_version }},Java ${{ needs.get-versions.outputs.java_version }},${{ needs.get-versions.outputs.loader_name }},client,server"
           project_id: "1332665"
           token: "${{ secrets.CURSE_TOKEN }}"
           changelog: ${{ github.event.release.body }}
